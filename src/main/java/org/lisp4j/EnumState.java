@@ -1,4 +1,4 @@
-package org.jlisp;
+package org.lisp4j;
 
 public enum EnumState {
     START

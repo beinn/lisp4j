@@ -1,19 +1,19 @@
-package org.jlisp;
+package org.lisp4j.functions;
 
 import java.util.List;
 
-public class MULFunction implements IFunction {
+public class SUMFunction implements IFunction {
 
     public String call(final List<String> tokens) {
-        double acum = 1;
+        double acum = 0;
         for (int i = 1; i < tokens.size(); i++) {
-            acum *= Double.parseDouble(tokens.get(i));
+            acum += Double.parseDouble(tokens.get(i));
         }
         return String.valueOf(acum);
     }
 
     public String getName() {
-        return "*";
+        return "+";
     }
 
 }

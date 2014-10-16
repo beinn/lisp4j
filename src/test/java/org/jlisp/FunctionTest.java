@@ -3,6 +3,7 @@ package org.jlisp;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.lisp4j.functions.Function;
 
 
 public class FunctionTest {

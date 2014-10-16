@@ -1,9 +1,16 @@
-package org.jlisp;
+package org.lisp4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.lisp4j.exceptions.UndefinedFunctionException;
+import org.lisp4j.functions.Function;
+import org.lisp4j.functions.HaltFunction;
+import org.lisp4j.functions.IFunction;
+import org.lisp4j.functions.MULFunction;
+import org.lisp4j.functions.SUMFunction;
 
 /**
  * 
@@ -100,14 +107,14 @@ public class Interpreter {
             return function.call(tokens);
         }
 
-        throw new UnsupportedOperationException(tokens.toString());
+        throw new UndefinedFunctionException(tokens.get(0));
     }
 
     public boolean isHalted() {
         return halted ;
     }
 
-    protected void setHalted(boolean b) {
+    public void setHalted(boolean b) {
         halted = b;
     }
 }
