@@ -13,6 +13,7 @@ import java.util.Map;
 public class Interpreter {
 
     private Map<String, IFunction> functions = new HashMap<String, IFunction>();
+    private boolean halted = false;
 
 
     public Interpreter() {
@@ -22,6 +23,7 @@ public class Interpreter {
     private void loadFunctions() {
         addFun(new MULFunction());
         addFun(new SUMFunction());
+        addFun(new HaltFunction(this));
     }
 
     private void addFun(final IFunction function) {
@@ -56,6 +58,10 @@ public class Interpreter {
                 } else {
                     results.add(token);
                 }
+                if(halted) {
+                    break;
+                }
+                
             } else if (c == '`' || c == '\'') {
                 newToken(buffer, tokens);
             } else if (c == ' ') {
@@ -95,5 +101,13 @@ public class Interpreter {
         }
 
         throw new UnsupportedOperationException(tokens.toString());
+    }
+
+    public boolean isHalted() {
+        return halted ;
+    }
+
+    protected void setHalted(boolean b) {
+        halted = b;
     }
 }
