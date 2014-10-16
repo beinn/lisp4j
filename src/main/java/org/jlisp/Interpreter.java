@@ -1,7 +1,9 @@
 package org.jlisp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -10,18 +12,34 @@ import java.util.List;
  */
 public class Interpreter {
 
+    private Map<String, IFunction> functions = new HashMap<String, IFunction>();
+
+
+    public Interpreter() {
+        loadFunctions();
+    }
+    
+    private void loadFunctions() {
+        addFun(new MULFunction());
+        addFun(new SUMFunction());
+    }
+
+    private void addFun(final IFunction function) {
+        functions.put(function.getName(), function);
+    }
+
     /**
      * 
      * @param code
      * @return
      */
-    public String execute(final String code) {
+    public List<String> execute(final String code) {
         EnumState state = EnumState.START;
         StringBuilder buffer = new StringBuilder();
         List<String> tokens = null;
-        List lists = new ArrayList();
-        //lists.add("");
-        for(int i = 0; i < code.length() ; i++) {
+        List<List<String>> lists = new ArrayList<List<String>>();
+        List<String> results = new ArrayList<String>();
+        for (int i = 0; i < code.length(); i++) {
             char c = code.charAt(i);
             if (c == '(') {
                 newToken(buffer, tokens);
@@ -31,21 +49,23 @@ public class Interpreter {
                 newToken(buffer, tokens);
                 String token = process(tokens);
                 lists.remove(tokens);
-                
+
                 if (lists.size() > 0) {
-                    Object obj = lists.get(lists.size() - 1);
-                    tokens = (List) obj;
+                    tokens = lists.get(lists.size() - 1);
                     tokens.add(token);
                 } else {
-                    lists.add(token);
+                    results.add(token);
                 }
+            } else if (c == '`' || c == '\'') {
+                newToken(buffer, tokens);
             } else if (c == ' ') {
                 newToken(buffer, tokens);
             } else {
                 buffer.append(c);
-            };
+            }
         }
-        return lists.get(0).toString();
+
+        return results;
     }
 
     private void newToken(StringBuilder buffer, List<String> tokens) {
@@ -59,23 +79,21 @@ public class Interpreter {
         if (tokens.isEmpty()) {
             return null;
         }
-        
-        if (tokens.get(0).equals("+")) {
-            double acum = 0;
-            for (int i = 1; i < tokens.size(); i++) {
-                acum += Double.parseDouble(tokens.get(i));
-            }
-            return String.valueOf(acum); 
+
+        if (tokens.get(0).equals("defun")) {
+            String funName = tokens.get(1).toUpperCase();
+            String params = tokens.get(2);
+            String function = tokens.get(3);
+            functions.put(funName, new Function(funName, params, function));
+            return funName;
         }
-        
-        if (tokens.get(0).equals("*")) {
-            double acum = 1;
-            for (int i = 1; i < tokens.size(); i++) {
-                acum *= Double.parseDouble(tokens.get(i));
-            }
-            return String.valueOf(acum); 
+
+        String funName = tokens.get(0).toUpperCase();
+        IFunction function = functions.get(funName);
+        if (function != null) {
+            return function.call(tokens);
         }
-        
-        throw new UnsupportedOperationException();
+
+        throw new UnsupportedOperationException(tokens.toString());
     }
 }
