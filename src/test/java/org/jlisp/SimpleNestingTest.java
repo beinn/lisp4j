@@ -38,6 +38,13 @@ public class SimpleNestingTest extends Base {
     }
 
     @Test
+    public void simpleSum_with_spaces() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("  (+ 2 3) ");
+        assertEquals(a("5.0"), result);
+    }
+    
+    @Test
     public void sum_negativeNumber() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("(+ -10.0 5)");

@@ -22,11 +22,10 @@ public class Interpreter {
     private Map<String, IFunction> functions = new HashMap<String, IFunction>();
     private boolean halted = false;
 
-
     public Interpreter() {
         loadFunctions();
     }
-    
+
     private void loadFunctions() {
         addFun(new MULFunction());
         addFun(new SUMFunction());
@@ -37,12 +36,54 @@ public class Interpreter {
         functions.put(function.getName(), function);
     }
 
-    /**
-     * 
-     * @param code
-     * @return
-     */
     public List<String> execute(final String code) {
+        EnumState state = EnumState.START;
+        final StringBuilder buffer = new StringBuilder();
+        List<String> tokens = null;
+        final List<List<String>> lists = new ArrayList<List<String>>();
+        final List<String> results = new ArrayList<String>();
+        for (int i = 0; i < code.length(); i++) {
+            char c = code.charAt(i);
+            if (state == EnumState.COMMENT) {
+                if (c == '\n') {
+                    state = EnumState.START;
+                }
+            } else {
+                if (c == '(') {
+                    newToken(buffer, tokens);
+                    tokens = new ArrayList<String>();
+                    lists.add(tokens);
+                } else if (c == ')') {
+                    newToken(buffer, tokens);
+                    String token = process(tokens);
+                    lists.remove(tokens);
+
+                    if (lists.size() > 0) {
+                        tokens = lists.get(lists.size() - 1);
+                        tokens.add(token);
+                    } else {
+                        results.add(token);
+                    }
+                    if (halted) {
+                        break;
+                    }
+                } else if (c == ';') {
+                    state = EnumState.COMMENT;
+                } else if (c == '`' || c == '\'') {
+                    newToken(buffer, tokens);
+                } else if (c == ' ') {
+                    newToken(buffer, tokens);
+                } else {
+                    buffer.append(c);
+                }
+            }
+        }
+
+        return results;
+
+    }
+
+    public List<String> executeb(final String code) {
         EnumState state = EnumState.START;
         StringBuilder buffer = new StringBuilder();
         List<String> tokens = null;
@@ -65,10 +106,11 @@ public class Interpreter {
                 } else {
                     results.add(token);
                 }
-                if(halted) {
+                if (halted) {
                     break;
                 }
-                
+            } else if (c == ';') {
+                break;
             } else if (c == '`' || c == '\'') {
                 newToken(buffer, tokens);
             } else if (c == ' ') {
@@ -81,7 +123,7 @@ public class Interpreter {
         return results;
     }
 
-    private void newToken(StringBuilder buffer, List<String> tokens) {
+    private void newToken(final StringBuilder buffer, final List<String> tokens) {
         if (buffer.length() > 0) {
             tokens.add(buffer.toString());
             buffer.setLength(0);
@@ -111,7 +153,7 @@ public class Interpreter {
     }
 
     public boolean isHalted() {
-        return halted ;
+        return halted;
     }
 
     public void setHalted(boolean b) {
