@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lisp4j.exceptions.UndefinedFunctionException;
-import org.lisp4j.functions.Function;
+import org.lisp4j.ast.ATOM;
+import org.lisp4j.ast.LIST;
 import org.lisp4j.functions.HaltFunction;
 import org.lisp4j.functions.IFunction;
 import org.lisp4j.functions.MULFunction;
@@ -19,7 +19,7 @@ import org.lisp4j.functions.SUMFunction;
  */
 public class Interpreter {
 
-    private Map<String, IFunction> functions = new HashMap<String, IFunction>();
+    public Map<String, IFunction> functions = new HashMap<String, IFunction>();
     private boolean halted = false;
 
     public Interpreter() {
@@ -36,12 +36,15 @@ public class Interpreter {
         functions.put(function.getName(), function);
     }
 
+    private EnumState state = EnumState.START;
+
     public List<String> execute(final String code) {
-        EnumState state = EnumState.START;
+
         final StringBuilder buffer = new StringBuilder();
-        List<String> tokens = null;
-        final List<List<String>> lists = new ArrayList<List<String>>();
-        final List<String> results = new ArrayList<String>();
+        final LIST root = new LIST();
+        root.noRoot = false;
+        LIST list = root;
+        LIST aux = root;
         for (int i = 0; i < code.length(); i++) {
             char c = code.charAt(i);
             if (state == EnumState.COMMENT) {
@@ -49,107 +52,50 @@ public class Interpreter {
                     state = EnumState.START;
                 }
             } else {
+                
                 if (c == '(') {
-                    newToken(buffer, tokens);
-                    tokens = new ArrayList<String>();
-                    lists.add(tokens);
+                    newAtom(buffer, aux);
+                    list = aux;
+                    aux = new LIST();
+                    if (state == EnumState.NO_EVAL) {
+                        aux.eval = false;
+                    }
+                    state = EnumState.START;
+                    list.expression.add(aux);
                 } else if (c == ')') {
-                    newToken(buffer, tokens);
-                    String token = process(tokens);
-                    lists.remove(tokens);
-
-                    if (lists.size() > 0) {
-                        tokens = lists.get(lists.size() - 1);
-                        tokens.add(token);
-                    } else {
-                        results.add(token);
-                    }
-                    if (halted) {
-                        break;
-                    }
+                    newAtom(buffer, aux);
+                    aux = list;
                 } else if (c == ';') {
                     state = EnumState.COMMENT;
                 } else if (c == '`' || c == '\'') {
-                    newToken(buffer, tokens);
+                    newAtom(buffer, aux);
+                    state = EnumState.NO_EVAL;
                 } else if (c == ' ') {
-                    newToken(buffer, tokens);
+                    newAtom(buffer, aux);
                 } else {
                     buffer.append(c);
                 }
             }
         }
 
-        return results;
-
+/*        ArrayList<String> r = new ArrayList<String>();
+        r.add(root.process(this, true).toString());*/
+        return root.process(this, true).display();
     }
 
-    public List<String> executeb(final String code) {
-        EnumState state = EnumState.START;
-        StringBuilder buffer = new StringBuilder();
-        List<String> tokens = null;
-        List<List<String>> lists = new ArrayList<List<String>>();
-        List<String> results = new ArrayList<String>();
-        for (int i = 0; i < code.length(); i++) {
-            char c = code.charAt(i);
-            if (c == '(') {
-                newToken(buffer, tokens);
-                tokens = new ArrayList<String>();
-                lists.add(tokens);
-            } else if (c == ')') {
-                newToken(buffer, tokens);
-                String token = process(tokens);
-                lists.remove(tokens);
+    private void newAtom(final StringBuilder buffer, final LIST s_expression) {
 
-                if (lists.size() > 0) {
-                    tokens = lists.get(lists.size() - 1);
-                    tokens.add(token);
-                } else {
-                    results.add(token);
-                }
-                if (halted) {
-                    break;
-                }
-            } else if (c == ';') {
-                break;
-            } else if (c == '`' || c == '\'') {
-                newToken(buffer, tokens);
-            } else if (c == ' ') {
-                newToken(buffer, tokens);
-            } else {
-                buffer.append(c);
-            }
-        }
-
-        return results;
-    }
-
-    private void newToken(final StringBuilder buffer, final List<String> tokens) {
         if (buffer.length() > 0) {
-            tokens.add(buffer.toString());
+            ATOM atom = new ATOM();
+            if (state == EnumState.NO_EVAL) {
+                atom.eval = false;
+            }
+            atom.id = buffer.toString();
+            s_expression.expression.add(atom);
             buffer.setLength(0);
+            state = EnumState.START;
         }
-    }
-
-    private String process(final List<String> tokens) {
-        if (tokens.isEmpty()) {
-            return null;
-        }
-
-        if (tokens.get(0).equals("defun")) {
-            String funName = tokens.get(1).toUpperCase();
-            String params = tokens.get(2);
-            String function = tokens.get(3);
-            functions.put(funName, new Function(funName, params, function));
-            return funName;
-        }
-
-        String funName = tokens.get(0).toUpperCase();
-        IFunction function = functions.get(funName);
-        if (function != null) {
-            return function.call(tokens);
-        }
-
-        throw new UndefinedFunctionException(tokens.get(0));
+        
     }
 
     public boolean isHalted() {

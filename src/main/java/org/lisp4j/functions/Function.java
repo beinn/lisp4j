@@ -2,6 +2,9 @@ package org.lisp4j.functions;
 
 import java.util.List;
 
+import org.lisp4j.ast.LIST;
+import org.lisp4j.ast.SEXP;
+
 public class Function  implements IFunction {
 
     private String name;
@@ -20,6 +23,11 @@ public class Function  implements IFunction {
 
     public String getName() {
         return name;
+    }
+
+    public SEXP call(LIST result) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

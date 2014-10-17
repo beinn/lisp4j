@@ -1,6 +1,6 @@
 package org.lisp4j;
 
 public enum EnumState {
-    START, COMMENT
+    START, COMMENT, NO_EVAL
 
 }

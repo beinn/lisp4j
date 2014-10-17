@@ -27,7 +27,7 @@ public class SimpleNestingTest extends Base {
     public void nil() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("()");
-        assertEquals(Arrays.asList(new String[] { null }), result);
+        assertEquals(Arrays.asList(new String[] { "NIL" }), result);
     }
 
     @Test

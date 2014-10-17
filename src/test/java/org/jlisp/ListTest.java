@@ -13,14 +13,14 @@ public class ListTest extends Base {
     public void simpleList() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("'(1 2 3)");
-        assertEquals(a("(1.0 2.0 3.0)"), result);
+        assertEquals(a("'(1 2 3)"), result);
     }
 
     @Test
     public void simpleListB() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("`(1 2 3)");
-        assertEquals(a("(1.0 2.0 3.0)"), result);
+        assertEquals(a("'(1 2 3)"), result);
     }
 
 }
