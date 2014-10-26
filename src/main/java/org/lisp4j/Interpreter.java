@@ -10,6 +10,7 @@ import org.lisp4j.ast.LIST;
 import org.lisp4j.symbols.ISymbol;
 import org.lisp4j.symbols.constants.PIConstant;
 import org.lisp4j.symbols.functions.CARFunction;
+import org.lisp4j.symbols.functions.CDRFunction;
 import org.lisp4j.symbols.functions.CLOSEFunction;
 import org.lisp4j.symbols.functions.ErrorFunction;
 import org.lisp4j.symbols.functions.HaltFunction;
@@ -40,6 +41,7 @@ public class Interpreter {
         addFun(new CARFunction());
         addFun(new CLOSEFunction());
         addFun(new PIConstant());
+        addFun(new CDRFunction());
         addFun(new HaltFunction(this));
     }
 
