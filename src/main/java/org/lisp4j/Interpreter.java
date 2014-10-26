@@ -12,9 +12,13 @@ import org.lisp4j.symbols.constants.PIConstant;
 import org.lisp4j.symbols.functions.CARFunction;
 import org.lisp4j.symbols.functions.CDRFunction;
 import org.lisp4j.symbols.functions.CLOSEFunction;
+import org.lisp4j.symbols.functions.CONSFunction;
+import org.lisp4j.symbols.functions.DEFPARAMETERFunction;
 import org.lisp4j.symbols.functions.ErrorFunction;
+import org.lisp4j.symbols.functions.HELPFunction;
 import org.lisp4j.symbols.functions.HaltFunction;
 import org.lisp4j.symbols.functions.MULFunction;
+import org.lisp4j.symbols.functions.OPENFunction;
 import org.lisp4j.symbols.functions.SUMFunction;
 
 /**
@@ -40,8 +44,12 @@ public class Interpreter {
         addFun(new ErrorFunction());
         addFun(new CARFunction());
         addFun(new CLOSEFunction());
+        addFun(new DEFPARAMETERFunction(this));
         addFun(new PIConstant());
         addFun(new CDRFunction());
+        addFun(new CONSFunction());
+        addFun(new OPENFunction());
+        addFun(new HELPFunction(this));
         addFun(new HaltFunction(this));
     }
 
@@ -52,6 +60,7 @@ public class Interpreter {
     }
 
     private EnumState state = EnumState.START;
+    public Map<String, ISymbol> symbols = new HashMap<String, ISymbol>();
 
     /**
      *

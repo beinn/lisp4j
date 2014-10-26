@@ -1,10 +1,12 @@
 package org.lisp4j.symbols.functions;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import org.lisp4j.ast.ATOM;
 import org.lisp4j.ast.LIST;
+import org.lisp4j.ast.NIL;
 import org.lisp4j.ast.SEXP;
 import org.lisp4j.symbols.ISymbol;
 
@@ -15,12 +17,16 @@ public class OPENFunction implements ISymbol {
     }
 
     public SEXP call(LIST result) {
-        double acum = 0;
-        for (int i = 1; i < result.expression.size(); i++) {
-            acum += Double.parseDouble(((ATOM)result.expression.get(i)).id);
+        ATOM atom = new NIL();
+        if(result.expression.size() > 1) {
+            if (result.expression.get(1) instanceof ATOM) {
+                String path = ((ATOM) result.expression.get(1)).id;
+                File file = new File(path);
+                atom = new ATOM();
+                atom.id = file.toString();
+            }
         }
-        ATOM atom = new ATOM();
-        atom.id = String.valueOf(acum);
+
         return atom;
     }
 

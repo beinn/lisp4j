@@ -3,6 +3,8 @@ package org.lisp4j.ast;
 import java.util.List;
 
 import org.lisp4j.Interpreter;
+import org.lisp4j.exceptions.ErrorException;
+import org.lisp4j.symbols.ISymbol;
 
 public class ATOM extends SEXP {
 
@@ -11,8 +13,21 @@ public class ATOM extends SEXP {
     @Override
     public SEXP process(Interpreter interpreter, boolean b) {
         final ATOM atom = new ATOM();
-        // TODO - resolve if is a symbol, so far is a string
-        atom.id = id;
+        String value = null;
+
+        try {
+            Double.parseDouble(id);
+            value = id;
+        } catch (NumberFormatException nfe) {
+            ISymbol symbol = interpreter.symbols.get(id);
+            if (symbol != null) {
+                value = ((ATOM)symbol.call(null)).id;
+            } else {
+                value = id;
+            }
+        }
+
+        atom.id = value;
         return atom;
     }
 
