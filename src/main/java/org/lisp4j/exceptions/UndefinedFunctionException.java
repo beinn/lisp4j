@@ -1,6 +1,6 @@
 package org.lisp4j.exceptions;
 
-public class UndefinedFunctionException extends RuntimeException {
+public class UndefinedFunctionException extends LispException {
 
     /**
      * 

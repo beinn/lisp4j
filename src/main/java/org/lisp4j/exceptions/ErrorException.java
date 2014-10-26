@@ -1,6 +1,6 @@
 package org.lisp4j.exceptions;
 
-public class ErrorException extends RuntimeException {
+public class ErrorException extends LispException {
 
     /**
      * 

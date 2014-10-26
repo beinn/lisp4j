@@ -9,6 +9,7 @@ import org.lisp4j.ast.ATOM;
 import org.lisp4j.ast.LIST;
 import org.lisp4j.symbols.ISymbol;
 import org.lisp4j.symbols.constants.PIConstant;
+import org.lisp4j.symbols.functions.ATOMFunction;
 import org.lisp4j.symbols.functions.CARFunction;
 import org.lisp4j.symbols.functions.CDRFunction;
 import org.lisp4j.symbols.functions.CLOSEFunction;
@@ -17,8 +18,11 @@ import org.lisp4j.symbols.functions.DEFPARAMETERFunction;
 import org.lisp4j.symbols.functions.ErrorFunction;
 import org.lisp4j.symbols.functions.HELPFunction;
 import org.lisp4j.symbols.functions.HaltFunction;
+import org.lisp4j.symbols.functions.LISTFunction;
 import org.lisp4j.symbols.functions.MULFunction;
 import org.lisp4j.symbols.functions.OPENFunction;
+import org.lisp4j.symbols.functions.SECONDFunction;
+import org.lisp4j.symbols.functions.SQRTFunction;
 import org.lisp4j.symbols.functions.SUMFunction;
 
 /**
@@ -49,6 +53,10 @@ public class Interpreter {
         addFun(new CDRFunction());
         addFun(new CONSFunction());
         addFun(new OPENFunction());
+        addFun(new SECONDFunction());
+        addFun(new ATOMFunction());
+        addFun(new SQRTFunction());
+        addFun(new LISTFunction());
         addFun(new HELPFunction(this));
         addFun(new HaltFunction(this));
     }
@@ -104,6 +112,10 @@ public class Interpreter {
                 } else if (c == '"') {
                     newAtom(buffer, aux); // TODO
                 } else if (c == '|') {
+                    newAtom(buffer, aux); // TODO
+                } else if (c == ',') {
+                    newAtom(buffer, aux); // TODO
+                } else if (c == '@') {
                     newAtom(buffer, aux); // TODO
                 } else {
                     buffer.append(c);
