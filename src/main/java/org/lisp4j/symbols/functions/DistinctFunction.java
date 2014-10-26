@@ -1,13 +1,17 @@
-package org.lisp4j.functions;
+package org.lisp4j.symbols.functions;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.lisp4j.ast.ATOM;
 import org.lisp4j.ast.LIST;
 import org.lisp4j.ast.SEXP;
+import org.lisp4j.symbols.ISymbol;
 
-public class MULFunction implements IFunction {
+public class DistinctFunction implements ISymbol {
 
-    public String getName() {
-        return "*";
+    public List<String>  getNames() {
+        return Arrays.asList("/=");
     }
 
     public SEXP call(LIST result) {

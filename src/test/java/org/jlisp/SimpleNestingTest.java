@@ -10,13 +10,6 @@ import org.lisp4j.Interpreter;
 
 public class SimpleNestingTest extends Base {
 
-    @Test
-    public void defun() {
-        Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(defun SUMA () (+ 2 3))");
-        assertEquals(a("SUMA"), result);
-    }
-
     @Test(expected = Exception.class)
     public void wrong_defun() {
         Interpreter lisp = new Interpreter();

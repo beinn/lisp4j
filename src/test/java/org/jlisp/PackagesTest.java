@@ -7,15 +7,14 @@ import java.util.List;
 import org.junit.Test;
 import org.lisp4j.Interpreter;
 
+public class PackagesTest extends Base {
 
-public class FunctionTest extends Base {
-    
     @Test
-    public void defun() {
+    public void inPackage() {
         Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(defun SUMA () (+ 2 3))");
-        assertEquals(a("SUMA"), result);
+        List<String> result = lisp.execute("(in-package `myapp)");
+        assertEquals(a("#<\"myapp\" package>"), result);
     }
-    
-    
+
+ 
 }

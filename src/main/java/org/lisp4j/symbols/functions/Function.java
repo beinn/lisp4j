@@ -1,11 +1,13 @@
-package org.lisp4j.functions;
+package org.lisp4j.symbols.functions;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.lisp4j.ast.LIST;
 import org.lisp4j.ast.SEXP;
+import org.lisp4j.symbols.ISymbol;
 
-public class Function  implements IFunction {
+public class Function  implements ISymbol {
 
     private String name;
     private String params;
@@ -21,8 +23,8 @@ public class Function  implements IFunction {
         return null;
     }
 
-    public String getName() {
-        return name;
+    public List<String>  getNames() {
+        return Arrays.asList(name);
     }
 
     public SEXP call(LIST result) {

@@ -1,11 +1,15 @@
-package org.lisp4j.functions;
+package org.lisp4j.symbols.functions;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.lisp4j.Interpreter;
 import org.lisp4j.ast.ATOM;
 import org.lisp4j.ast.LIST;
 import org.lisp4j.ast.SEXP;
+import org.lisp4j.symbols.ISymbol;
 
-public class HaltFunction implements IFunction {
+public class HaltFunction implements ISymbol {
 
     private Interpreter interpreter;
 
@@ -13,8 +17,8 @@ public class HaltFunction implements IFunction {
         this.interpreter = interpreter;
     }
 
-    public String getName() {
-        return "QUIT";
+    public List<String>  getNames() {
+        return Arrays.asList("QUIT");
     }
 
     public SEXP call(LIST result) {

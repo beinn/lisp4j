@@ -7,10 +7,14 @@ import java.util.Map;
 
 import org.lisp4j.ast.ATOM;
 import org.lisp4j.ast.LIST;
-import org.lisp4j.functions.HaltFunction;
-import org.lisp4j.functions.IFunction;
-import org.lisp4j.functions.MULFunction;
-import org.lisp4j.functions.SUMFunction;
+import org.lisp4j.symbols.ISymbol;
+import org.lisp4j.symbols.constants.PIConstant;
+import org.lisp4j.symbols.functions.CARFunction;
+import org.lisp4j.symbols.functions.CLOSEFunction;
+import org.lisp4j.symbols.functions.ErrorFunction;
+import org.lisp4j.symbols.functions.HaltFunction;
+import org.lisp4j.symbols.functions.MULFunction;
+import org.lisp4j.symbols.functions.SUMFunction;
 
 /**
  * 
@@ -19,9 +23,12 @@ import org.lisp4j.functions.SUMFunction;
  */
 public class Interpreter {
 
-    public Map<String, IFunction> functions = new HashMap<String, IFunction>();
+    public Map<String, ISymbol> functions = new HashMap<String, ISymbol>();
     private boolean halted = false;
 
+    public String currentPackage = "common-lisp-user";
+    public List<String> uses = new ArrayList<String>();
+    
     public Interpreter() {
         loadFunctions();
     }
@@ -29,15 +36,26 @@ public class Interpreter {
     private void loadFunctions() {
         addFun(new MULFunction());
         addFun(new SUMFunction());
+        addFun(new ErrorFunction());
+        addFun(new CARFunction());
+        addFun(new CLOSEFunction());
+        addFun(new PIConstant());
         addFun(new HaltFunction(this));
     }
 
-    private void addFun(final IFunction function) {
-        functions.put(function.getName(), function);
+    private void addFun(final ISymbol function) {
+        for(final String name:function.getNames()){
+            functions.put(name, function);
+        }
     }
 
     private EnumState state = EnumState.START;
 
+    /**
+     *
+     * @param code
+     * @return
+     */
     public List<String> execute(final String code) {
 
         final StringBuilder buffer = new StringBuilder();
@@ -71,15 +89,17 @@ public class Interpreter {
                     newAtom(buffer, aux);
                     state = EnumState.NO_EVAL;
                 } else if (c == ' ') {
-                    newAtom(buffer, aux);
+                    newAtom(buffer, aux); 
+                } else if (c == '"') {
+                    newAtom(buffer, aux); // TODO
+                } else if (c == '|') {
+                    newAtom(buffer, aux); // TODO
                 } else {
                     buffer.append(c);
                 }
             }
         }
 
-/*        ArrayList<String> r = new ArrayList<String>();
-        r.add(root.process(this, true).toString());*/
         return root.process(this, true).display();
     }
 

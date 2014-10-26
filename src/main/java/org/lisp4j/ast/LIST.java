@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.lisp4j.Interpreter;
 import org.lisp4j.exceptions.UndefinedFunctionException;
-import org.lisp4j.functions.IFunction;
+import org.lisp4j.symbols.ISymbol;
 
 public class LIST extends SEXP {
     public List<SEXP> expression = new ArrayList<SEXP>();
@@ -27,7 +27,7 @@ public class LIST extends SEXP {
         SEXP results = null;
         if (doit && !result.expression.isEmpty() && noRoot) {
             final String fname = result.expression.get(0).toString().toUpperCase();
-            final IFunction f = interpreter.functions.get(fname);
+            final ISymbol f = interpreter.functions.get(fname);
             if (f != null) {
                 results = f.call(result);
             } else {
