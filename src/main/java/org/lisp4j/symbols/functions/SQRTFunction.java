@@ -6,22 +6,26 @@ import java.util.List;
 import org.lisp4j.ast.ATOM;
 import org.lisp4j.ast.LIST;
 import org.lisp4j.ast.SEXP;
+import org.lisp4j.exceptions.WrongArgumentNumbersException;
 import org.lisp4j.symbols.ISymbol;
+import org.lisp4j.symbols.functions.utils.Numbers;
 
 public class SQRTFunction implements ISymbol {
 
-    public List<String>  getNames() {
+    public List<String> getNames() {
         return Arrays.asList("SQRT");
     }
 
     public SEXP call(LIST result) {
-        double acum = 0;
-        for (int i = 1; i < result.expression.size(); i++) {
-            acum += Double.parseDouble(((ATOM)result.expression.get(i)).id);
+
+        if (result.expression.size() != 2) {
+            throw new WrongArgumentNumbersException("Errot: SQRT requires one argument");
         }
-        ATOM atom = new ATOM();
-        atom.id = String.valueOf(acum);
-        return atom;
+
+        final ATOM sexp = new ATOM();
+        sexp.id = String.valueOf(Math.sqrt(Numbers.checkNumeric(result.expression.get(1))));
+
+        return sexp;
     }
 
 }

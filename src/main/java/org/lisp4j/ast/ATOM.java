@@ -22,6 +22,8 @@ public class ATOM extends SEXP {
             final ISymbol symbol = interpreter.symbols.get(id.toUpperCase());
             if (symbol != null) {
                 value = ((ATOM)symbol.call(null)).id;
+            } else if ("NIL".equalsIgnoreCase(id)){
+                value = "NIL";
             } else {
                 value = id;
             }

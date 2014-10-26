@@ -15,12 +15,14 @@ import org.lisp4j.symbols.functions.CDRFunction;
 import org.lisp4j.symbols.functions.CLOSEFunction;
 import org.lisp4j.symbols.functions.CONSFunction;
 import org.lisp4j.symbols.functions.DEFPARAMETERFunction;
+import org.lisp4j.symbols.functions.DistinctFunction;
 import org.lisp4j.symbols.functions.EQFunction;
 import org.lisp4j.symbols.functions.ErrorFunction;
 import org.lisp4j.symbols.functions.HELPFunction;
 import org.lisp4j.symbols.functions.HaltFunction;
 import org.lisp4j.symbols.functions.LISTFunction;
 import org.lisp4j.symbols.functions.MULFunction;
+import org.lisp4j.symbols.functions.NOTFunction;
 import org.lisp4j.symbols.functions.NUMERICEQFunction;
 import org.lisp4j.symbols.functions.OPENFunction;
 import org.lisp4j.symbols.functions.SECONDFunction;
@@ -45,6 +47,8 @@ public class Interpreter {
     }
 
     private void loadFunctions() {
+        addFun(new NOTFunction());
+        addFun(new DistinctFunction());
         addFun(new MULFunction());
         addFun(new SUMFunction());
         addFun(new ErrorFunction());
