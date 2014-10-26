@@ -45,6 +45,13 @@ public class SimpleNestingTest extends Base {
     }
 
     @Test
+    public void circle() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(* 2 pi 1)");
+        assertEquals(a("6.2831852"), result);
+    }
+    
+    @Test
     public void sum_positiveNumber() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("(+ +23 +03)");

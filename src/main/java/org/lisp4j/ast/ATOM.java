@@ -19,7 +19,7 @@ public class ATOM extends SEXP {
             Double.parseDouble(id);
             value = id;
         } catch (NumberFormatException nfe) {
-            final ISymbol symbol = interpreter.symbols.get(id);
+            final ISymbol symbol = interpreter.symbols.get(id.toUpperCase());
             if (symbol != null) {
                 value = ((ATOM)symbol.call(null)).id;
             } else {
@@ -31,6 +31,20 @@ public class ATOM extends SEXP {
         return atom;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ATOM)) {
+            return false;
+        }
+        final ATOM atom = (ATOM) obj;
+        return this.hashCode() == atom.hashCode();
+    }
+    
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+    
     @Override
     public String toString() {
         return id;
