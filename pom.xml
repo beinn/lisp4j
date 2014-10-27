@@ -6,6 +6,32 @@
     <artifactId>lisp4j</artifactId>
     <version>0.1</version>
 
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>Lisp interpreter library for Java</description>
+    <url>https://github.com/beinn/lisp4j</url>
+
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE, Version 3, 29 June 2007</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Javier R</name>
+            <email>beinn@openmailbox.org</email>
+            <organization>no org</organization>
+            <organizationUrl>https://github.com/beinn/lisp4j</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:beinn/lisp4j.git</connection>
+        <developerConnection>scm:git:git@github.com:beinn/lisp4j.git</developerConnection>
+        <url>git@github.com:beinn/lisp4j.git</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

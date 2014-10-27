@@ -20,9 +20,10 @@ public class ATOM extends SEXP {
             value = id;
         } catch (NumberFormatException nfe) {
             final ISymbol symbol = interpreter.symbols.get(id.toUpperCase());
+
             if (symbol != null) {
                 value = ((ATOM)symbol.call(null)).id;
-            } else if ("NIL".equalsIgnoreCase(id)){
+            } else if ("NIL".equalsIgnoreCase(id)) {
                 value = "NIL";
             } else {
                 value = id;
