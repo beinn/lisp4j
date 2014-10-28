@@ -22,6 +22,9 @@ import java.util.Map;
 
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
+/**
+ * 
+ */
 public class LispPackage {
 
     public Map<String, ISymbol> symbols = new HashMap<String, ISymbol>();

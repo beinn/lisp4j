@@ -41,8 +41,10 @@ import com.github.beinn.lisp4j.symbols.functions.SUMFunction;
 import com.github.beinn.lisp4j.symbols.macros.Defmacro;
 import com.github.beinn.lisp4j.symbols.macros.Defun;
 
+/**
+ *
+ */
 public class CommonLispPackage extends LispPackage {
-
 
 	public CommonLispPackage(final Interpreter interpreter) {
 		super("common-lisp");

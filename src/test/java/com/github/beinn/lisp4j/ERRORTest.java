@@ -17,24 +17,17 @@
  */
 package com.github.beinn.lisp4j;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.beinn.lisp4j.Interpreter;
+import com.github.beinn.lisp4j.exceptions.ErrorException;
 
-
-public class CONSTest extends Base {
+public class ERRORTest extends Base {
     
-    @Test
-    @Ignore
-    public void cons() {
+    @Test(expected = ErrorException.class)
+    public void error() {
         Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(cons 1 2))");
-        assertEquals(a("4"), result);
+        lisp.execute("(ERROR `bla))");
     }
    
 }
