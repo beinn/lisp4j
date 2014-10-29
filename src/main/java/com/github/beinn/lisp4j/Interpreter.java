@@ -68,57 +68,6 @@ public class Interpreter {
         return ast.process(this, true).display();
     }
 
-    @Deprecated
-    private LIST astGen(final String code) {
-        state = EnumState.START;
-        final StringBuilder buffer = new StringBuilder();
-        final LIST root = new LIST();
-        root.noRoot = false;
-        LIST list = root;
-        LIST aux = root;
-        for (int i = 0; i < code.length(); i++) {
-            char c = code.charAt(i);
-            if (state == EnumState.COMMENT) {
-                if (c == '\n') {
-                    state = EnumState.START;
-                }
-            } else {
-
-                if (c == '(') {
-                    newAtom(buffer, aux);
-                    list = aux;
-                    aux = new LIST();
-                    if (state == EnumState.NO_EVAL) {
-                        aux.eval = false;
-                    }
-                    state = EnumState.START;
-                    list.expression.add(aux);
-                } else if (c == ')') {
-                    newAtom(buffer, aux);
-                    aux = list;
-                } else if (c == ';') {
-                    state = EnumState.COMMENT;
-                } else if (c == '`' || c == '\'') {
-                    newAtom(buffer, aux);
-                    state = EnumState.NO_EVAL;
-                } else if (c == ' ') {
-                    newAtom(buffer, aux);
-                } else if (c == '"') {
-                    newAtom(buffer, aux); // TODO
-                } else if (c == '|') {
-                    newAtom(buffer, aux); // TODO
-                } else if (c == ',') {
-                    newAtom(buffer, aux); // TODO
-                } else if (c == '@') {
-                    newAtom(buffer, aux); // TODO
-                } else {
-                    buffer.append(c);
-                }
-            }
-        }
-        return root;
-    }
-
     private List<Token> lexParse(final String code) {
         final List<Token> tokens = new ArrayList<Token>();
         final StringBuilder buffer = new StringBuilder();
@@ -152,6 +101,7 @@ public class Interpreter {
                 } else if (c == ' ') {
                     createToken(tokens, buffer);
                 } else if (c == '"') {
+                    buffer.append(c);
                     state = EnumState.STRING;
                 } else if (c == '|') {
                 } else if (c == '#') {
@@ -211,22 +161,6 @@ public class Interpreter {
             }
         }
         return root;
-    }
-
-    @Deprecated
-    private void newAtom(final StringBuilder buffer, final LIST s_expression) {
-
-        if (buffer.length() > 0) {
-            ATOM atom = new ATOM();
-            if (state == EnumState.NO_EVAL) {
-                atom.eval = false;
-            }
-            atom.id = buffer.toString();
-            s_expression.expression.add(atom);
-            buffer.setLength(0);
-            state = EnumState.START;
-        }
-
     }
 
     public boolean isHalted() {

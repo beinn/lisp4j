@@ -41,4 +41,10 @@ public class ListTest extends Base {
         assertEquals(a("'(1 2 3)"), result);
     }
 
+    @Test
+    public void stringList() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("`(\"bla\" 2 \"blu\")");
+        assertEquals(a("'(\"bla\" 2 \"blu\")"), result);
+    }
 }
