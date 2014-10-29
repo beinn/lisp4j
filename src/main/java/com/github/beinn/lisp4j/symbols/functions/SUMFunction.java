@@ -35,7 +35,7 @@ public class SUMFunction implements ISymbol {
         return Arrays.asList("+");
     }
 
-    public SEXP call(final LIST result) {
+    public SEXP call(final LIST result, LIST parent) {
         double acum = 0;
         for (int i = 1; i < result.expression.size(); i++) {
             acum += Numbers.checkNumeric(result.expression.get(i));

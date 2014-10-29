@@ -42,7 +42,7 @@ public class HELPFunction implements ISymbol {
         return Arrays.asList("HELP");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         final ATOM atom = new ATOM();
         final StringBuilder builder = new StringBuilder();
         for (final LispPackage p:interpreter.packages) {

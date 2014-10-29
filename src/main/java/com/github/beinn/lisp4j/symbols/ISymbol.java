@@ -27,7 +27,7 @@ import com.github.beinn.lisp4j.ast.SEXP;
  */
 public interface ISymbol {
 
-    SEXP call(LIST result);
+    SEXP call(LIST result, LIST parent);
 
     List<String> getNames();
 

@@ -33,7 +33,7 @@ public class OPENFunction implements ISymbol {
         return Arrays.asList("OPEN");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         ATOM atom = new NIL();
         if(result.expression.size() > 1) {
             if (result.expression.get(1) instanceof ATOM) {

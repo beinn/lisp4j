@@ -31,7 +31,7 @@ public class CDRFunction implements ISymbol {
         return Arrays.asList("CDR");
     }
 
-    public SEXP call(final LIST result) {
+    public SEXP call(final LIST result, LIST parent) {
         SEXP sexp;
         if (result.expression.size() > 1 && result.expression.get(1) instanceof LIST && ((LIST)result.expression.get(1)).expression.size() > 1) {
             LIST lst = new LIST();

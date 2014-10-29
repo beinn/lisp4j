@@ -31,7 +31,7 @@ public class CARFunction implements ISymbol {
         return Arrays.asList("CAR", "FIRST");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         SEXP sexp;
         if (result.expression.size() > 1 && result.expression.get(1) instanceof LIST && !((LIST)result.expression.get(1)).expression.isEmpty()) {
             sexp = ((LIST)result.expression.get(1)).expression.get(0);

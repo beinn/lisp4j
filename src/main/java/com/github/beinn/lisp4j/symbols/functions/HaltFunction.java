@@ -38,7 +38,7 @@ public class HaltFunction implements ISymbol {
         return Arrays.asList("QUIT");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         interpreter.setHalted(true);
         ATOM atom = new ATOM();
         atom.id = "Bye!";

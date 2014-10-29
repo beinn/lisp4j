@@ -18,8 +18,10 @@
 package com.github.beinn.lisp4j.ast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.github.beinn.lisp4j.Interpreter;
 import com.github.beinn.lisp4j.exceptions.UndefinedFunctionException;
@@ -28,11 +30,13 @@ import com.github.beinn.lisp4j.symbols.ISymbol;
 
 public class LIST extends SEXP {
     public List<SEXP> expression = new ArrayList<SEXP>();
-
+    public Map<String, ISymbol> local = new HashMap<String, ISymbol>();
+    public LIST parent;
     public boolean noRoot = true;
 
     @Override
-    public SEXP process(final Interpreter interpreter, final boolean local_eval) {
+    public SEXP process(final Interpreter interpreter, final boolean local_eval, final LIST parent) {
+        this.parent = parent;
         final boolean doit = (flag == FLAG.COMMA) || (eval && local_eval);
         final LIST result = new LIST();
         result.eval = eval;
@@ -46,12 +50,12 @@ public class LIST extends SEXP {
 	
 	    	if (macro != null && doit) {
 	    		// expand the macro
-	    		return macro.call(this).process(interpreter, true);
+	    		return macro.call(this, null).process(interpreter, true, this);
 	    	}
         }
         
         for (final SEXP sexp : expression) {
-            result.expression.add(sexp.process(interpreter, doit));
+            result.expression.add(sexp.process(interpreter, doit, this));
             if (interpreter.isHalted()) {
                 break;
             }
@@ -61,7 +65,7 @@ public class LIST extends SEXP {
             final String fname = result.expression.get(0).toString().toUpperCase();
             final ISymbol f = recoverFunction(interpreter, fname);
             if (f != null) {
-                results = f.call(result);
+                results = f.call(result, null);
             } else {
                 throw new UndefinedFunctionException(fname);
             }

@@ -35,7 +35,7 @@ public class NUMERICEQFunction implements ISymbol {
         return Arrays.asList("=");
     }
 
-    public SEXP call(final LIST result) {
+    public SEXP call(final LIST result, LIST parent) {
         final ATOM sexp;
         if (result.expression.size() < 2) {
             throw new WrongArgumentNumbersException("Errot: = requires more than zero argument");

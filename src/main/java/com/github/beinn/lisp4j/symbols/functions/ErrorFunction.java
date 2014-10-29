@@ -31,7 +31,7 @@ public class ErrorFunction implements ISymbol {
         return Arrays.asList("ERROR");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         String msg = "";
         if (result.expression.size() > 1) {
             msg = result.expression.get(1).toString();

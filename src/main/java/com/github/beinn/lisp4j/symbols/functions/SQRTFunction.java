@@ -33,7 +33,7 @@ public class SQRTFunction implements ISymbol {
         return Arrays.asList("SQRT");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
 
         if (result.expression.size() != 2) {
             throw new WrongArgumentNumbersException("Errot: SQRT requires one argument");

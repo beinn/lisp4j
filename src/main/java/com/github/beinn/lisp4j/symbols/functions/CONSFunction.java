@@ -30,7 +30,7 @@ public class CONSFunction implements ISymbol {
         return Arrays.asList("CONS");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         throw new UnsupportedOperationException();
     }
 

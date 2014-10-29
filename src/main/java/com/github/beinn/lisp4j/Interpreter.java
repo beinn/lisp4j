@@ -18,11 +18,14 @@
 package com.github.beinn.lisp4j;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import com.github.beinn.lisp4j.packages.CommonLispPackage;
 import com.github.beinn.lisp4j.packages.LispPackage;
+import com.github.beinn.lisp4j.symbols.ISymbol;
 import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.FLAG;
 import com.github.beinn.lisp4j.ast.LIST;
@@ -66,7 +69,7 @@ public class Interpreter {
         // syntactical parsing
         LIST ast = synParse(tokens);
 
-        return ast.process(this, true).display();
+        return ast.process(this, true, null).display();
     }
 
     private List<Token> lexParse(final String code) {

@@ -34,7 +34,7 @@ public class LISTFunction implements ISymbol {
         return Arrays.asList("LIST");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         final LIST sexp = new LIST();
         if (result.expression.size() == 1) {
             return new NIL();

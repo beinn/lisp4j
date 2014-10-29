@@ -38,7 +38,7 @@ public class DEFPARAMETERFunction implements ISymbol {
         return Arrays.asList("DEFPARAMETER");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         final ATOM atom = new ATOM();
         
         if (result.expression.size() > 2) {
@@ -51,7 +51,7 @@ public class DEFPARAMETERFunction implements ISymbol {
                     return Arrays.asList(name);
                 }
                 
-                public SEXP call(final LIST result) {
+                public SEXP call(final LIST result, LIST parent) {
                     return atom;
                 }
             });

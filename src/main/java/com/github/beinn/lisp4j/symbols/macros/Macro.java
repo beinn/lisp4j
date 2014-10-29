@@ -33,7 +33,7 @@ public class Macro implements ISymbol {
 		this.name = name;
 	}
 
-	public SEXP call(final LIST result) {
+	public SEXP call(final LIST result, LIST parent) {
 		//TODO
 		return new NIL();
 	}

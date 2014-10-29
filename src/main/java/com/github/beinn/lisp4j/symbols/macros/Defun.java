@@ -35,7 +35,7 @@ public class Defun implements ISymbol {
 		this.interpreter = interpreter;
 	}
 
-	public SEXP call(final LIST result) {
+	public SEXP call(final LIST result, LIST parent) {
 		final ATOM atom = new ATOM();
 		atom.id = ((ATOM)result.expression.get(1)).id.toUpperCase();
 		LIST args = ((LIST)result.expression.get(2));

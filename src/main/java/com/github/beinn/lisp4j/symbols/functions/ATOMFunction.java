@@ -33,7 +33,7 @@ public class ATOMFunction implements ISymbol {
         return Arrays.asList("ATOM");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         final ATOM sexp;
         if (result.expression.size() != 2) {
             throw new WrongArgumentNumbersException("Errot: ATOM requires only 1 argument");

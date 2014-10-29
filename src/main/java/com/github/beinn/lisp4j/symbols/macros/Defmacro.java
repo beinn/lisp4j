@@ -34,7 +34,7 @@ public class Defmacro implements ISymbol {
 		this.interpreter = interpreter;
 	}
 
-	public SEXP call(final LIST result) {
+	public SEXP call(final LIST result, LIST parent) {
 		ATOM atom = new ATOM();
 		atom.id = ((ATOM)result.expression.get(1)).id.toUpperCase();
 		

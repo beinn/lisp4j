@@ -32,7 +32,7 @@ public class NOTFunction implements ISymbol {
         return Arrays.asList("NOT");
     }
 
-    public SEXP call(final LIST result) {
+    public SEXP call(final LIST result, LIST parent) {
         if (result.expression.size() != 2) {
             throw new WrongArgumentNumbersException("Errot: NOT requires only 1 argument");
         }
@@ -40,7 +40,7 @@ public class NOTFunction implements ISymbol {
         lst.expression.add(null);
         lst.expression.add(new NIL());
         lst.expression.add(result.expression.get(1));
-        return new EQFunction().call(lst);
+        return new EQFunction().call(lst, null);
     }
 
 }

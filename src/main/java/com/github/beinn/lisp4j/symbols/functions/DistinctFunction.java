@@ -31,7 +31,7 @@ public class DistinctFunction implements ISymbol {
         return Arrays.asList("/=");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         double acum = 1;
         for (int i = 1; i < result.expression.size(); i++) {
             acum *= Double.parseDouble(((ATOM)result.expression.get(i)).id);

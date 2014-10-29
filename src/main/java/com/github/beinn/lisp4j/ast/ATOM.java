@@ -29,7 +29,7 @@ public class ATOM extends SEXP {
     public String id;
 
     @Override
-    public SEXP process(final Interpreter interpreter, final boolean b) {
+    public SEXP process(final Interpreter interpreter, final boolean b, final LIST parent) {
         final ATOM atom = new ATOM();
         String value = null;
 
@@ -37,10 +37,10 @@ public class ATOM extends SEXP {
             Double.parseDouble(id);
             value = id;
         } catch (NumberFormatException nfe) {
-            final ISymbol symbol = recoverSymbol(interpreter,id.toUpperCase());
+            final ISymbol symbol = recoverSymbol(interpreter, parent, id.toUpperCase());
 
             if (symbol != null) {
-                value = ((ATOM)symbol.call(null)).id;
+                value = ((ATOM) symbol.call(null, null)).id;
             } else if ("NIL".equalsIgnoreCase(id)) {
                 value = "NIL";
             } else {
@@ -52,17 +52,34 @@ public class ATOM extends SEXP {
         return atom;
     }
 
-    private ISymbol recoverSymbol(final Interpreter interpreter, final String symbol) {
-    	for(final LispPackage p:interpreter.packages) {
-    		final ISymbol s = p.symbols.get(symbol);
-    		if (s != null) {
-    			return s;
-    		}
-    	}
-		return null;
-	}
+    private ISymbol recoverSymbol(final Interpreter interpreter, final LIST parent, final String symbol) {
+        // local
+        final ISymbol val = findLocalSymbol(parent, symbol);
+        if (val != null) {
+            return val;
+        }
+        // global
+        for (final LispPackage p : interpreter.packages) {
+            final ISymbol s = p.symbols.get(symbol);
+            if (s != null) {
+                return s;
+            }
+        }
+        return null;
+    }
 
-	@Override
+    private ISymbol findLocalSymbol(final LIST parent, final String symbol) {
+        if (parent == null) {
+            return null;
+        }
+        ISymbol val = parent.local.get(symbol);
+        if (val != null) {
+            return val;
+        }
+        return findLocalSymbol(parent.parent, symbol);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof ATOM)) {
             return false;
@@ -70,12 +87,12 @@ public class ATOM extends SEXP {
         final ATOM atom = (ATOM) obj;
         return this.hashCode() == atom.hashCode();
     }
-    
+
     @Override
     public int hashCode() {
         return id.hashCode();
     }
-    
+
     @Override
     public String toString() {
         return id;

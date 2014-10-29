@@ -33,7 +33,7 @@ public class EQFunction implements ISymbol {
         return Arrays.asList("EQ");
     }
 
-    public SEXP call(LIST result) {
+    public SEXP call(LIST result, LIST parent) {
         final ATOM sexp;
         if (result.expression.size() != 3) {
             throw new WrongArgumentNumbersException("Errot: EQ requires only 2 argument");

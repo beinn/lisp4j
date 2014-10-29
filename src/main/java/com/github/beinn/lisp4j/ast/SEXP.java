@@ -25,7 +25,7 @@ public abstract class SEXP {
     public boolean eval = true;
 
     public FLAG flag = FLAG.NONE;
-    public abstract SEXP process(Interpreter interpreter, boolean b);
+    public abstract SEXP process(Interpreter interpreter, boolean b,  final LIST parent);
 
     public abstract List<String> display();
 }
