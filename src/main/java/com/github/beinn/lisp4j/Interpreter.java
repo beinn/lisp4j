@@ -24,6 +24,7 @@ import java.util.Stack;
 import com.github.beinn.lisp4j.packages.CommonLispPackage;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.ast.ATOM;
+import com.github.beinn.lisp4j.ast.FLAG;
 import com.github.beinn.lisp4j.ast.LIST;
 import com.github.beinn.lisp4j.exceptions.SyntaxErrorException;
 
@@ -71,6 +72,7 @@ public class Interpreter {
     private List<Token> lexParse(final String code) {
         final List<Token> tokens = new ArrayList<Token>();
         final StringBuilder buffer = new StringBuilder();
+        state = EnumState.START;
         for (int i = 0; i < code.length(); i++) {
             char c = code.charAt(i);
             if (state == EnumState.STRING) {
@@ -106,7 +108,13 @@ public class Interpreter {
                 } else if (c == '|') {
                 } else if (c == '#') {
                 } else if (c == ',') {
+                    createToken(tokens, buffer);
+                    buffer.append(c);
+                    createToken(tokens, buffer);
                 } else if (c == '@') {
+                    if (tokens.size() > 0 && buffer.length() == 0 && tokens.get(tokens.size()-1).token.equals(",")){
+                        tokens.get(tokens.size()-1).token = ",@";
+                    }
                 } else if (c == '\n') {
                 } else {
                     buffer.append(c);
@@ -130,11 +138,13 @@ public class Interpreter {
         final Stack<LIST> stack = new Stack<LIST>();
         LIST current = root;
         EnumState state = EnumState.START;
+        FLAG flag = FLAG.NONE;
         for (final Token token : tokens) {
             if (token.token.equals("(")) {
                 final LIST list = new LIST();
                 if (state == EnumState.NO_EVAL) {
                     list.eval = false;
+                    list.flag = flag;
                     state = EnumState.START;
                 }
                 current.expression.add(list);
@@ -148,12 +158,21 @@ public class Interpreter {
                 }
             } else if (token.token.equals("'")) {
                 state = EnumState.NO_EVAL;
+                flag = FLAG.QUOTE;
             } else if (token.token.equals("`")) {
                 state = EnumState.NO_EVAL;
+                flag = FLAG.QUOTE;
+            } else if (token.token.equals(",")) {
+                state = EnumState.NO_EVAL;
+                flag = FLAG.COMMA;
+            } else if (token.token.equals(",@")) {
+                state = EnumState.NO_EVAL;
+                flag = FLAG.COMMA_AT;
             } else {
                 final ATOM atom = new ATOM();
                 if (state == EnumState.NO_EVAL) {
                     atom.eval = false;
+                    atom.flag = flag;
                     state = EnumState.START;
                 }
                 atom.id = token.token;

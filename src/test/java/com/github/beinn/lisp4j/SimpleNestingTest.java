@@ -18,6 +18,8 @@
 package com.github.beinn.lisp4j;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,8 @@ import org.junit.Test;
 
 import com.github.beinn.lisp4j.Interpreter;
 import com.github.beinn.lisp4j.exceptions.SyntaxErrorException;
+import com.github.beinn.lisp4j.exceptions.UnboundVariableException;
+import com.github.beinn.lisp4j.exceptions.WrongArgumentTypeException;
 
 public class SimpleNestingTest extends Base {
 
@@ -43,27 +47,42 @@ public class SimpleNestingTest extends Base {
         assertEquals(a("5.0"), result);
     }
 
+    @Test(expected = UnboundVariableException.class)
+    public void unboundVariable() {
+        Interpreter lisp = new Interpreter();
+        lisp.execute("(+ 2 x)");
+    }
+
     @Test(expected = SyntaxErrorException.class)
     public void tooManyParenthesis() {
         Interpreter lisp = new Interpreter();
+        assertFalse(lisp.isIgnoreTooManyParenthesis());
         lisp.execute("(+ 2 3))");
     }
-    
+
     @Test
     public void tooManyParenthesis_ignoreMode() {
         Interpreter lisp = new Interpreter();
+        assertFalse(lisp.isIgnoreTooManyParenthesis());
         lisp.setIgnoreTooManyParenthesis(true);
+        assertTrue(lisp.isIgnoreTooManyParenthesis());
         List<String> result = lisp.execute("(+ 2 3))");
         assertEquals(a("5.0"), result);
     }
-    
+
+    @Test(expected = WrongArgumentTypeException.class)
+    public void wrongArguments() {
+        Interpreter lisp = new Interpreter();
+        lisp.execute("(+ 2 `(2 3))");
+    }
+
     @Test
     public void simpleSum_with_spaces() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("  (+ 2 3) ");
         assertEquals(a("5.0"), result);
     }
-    
+
     @Test
     public void sum_negativeNumber() {
         Interpreter lisp = new Interpreter();
@@ -75,9 +94,9 @@ public class SimpleNestingTest extends Base {
     public void circle() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("(* 2 pi 1)");
-        assertEquals(a("6.2831852"), result);
+        assertEquals(a("6.283185307179586"), result);
     }
-    
+
     @Test
     public void sum_positiveNumber() {
         Interpreter lisp = new Interpreter();

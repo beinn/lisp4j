@@ -24,6 +24,7 @@ import com.github.beinn.lisp4j.Interpreter;
 public abstract class SEXP {
     public boolean eval = true;
 
+    public FLAG flag = FLAG.NONE;
     public abstract SEXP process(Interpreter interpreter, boolean b);
 
     public abstract List<String> display();

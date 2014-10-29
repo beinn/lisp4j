@@ -33,7 +33,7 @@ public class LIST extends SEXP {
 
     @Override
     public SEXP process(final Interpreter interpreter, final boolean local_eval) {
-        final boolean doit = eval && local_eval;
+        final boolean doit = (flag == FLAG.COMMA) || (eval && local_eval);
         final LIST result = new LIST();
         result.eval = eval;
         //check if we are in a macro

@@ -42,6 +42,20 @@ public class ListTest extends Base {
     }
 
     @Test
+    public void eval_comma() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("`(1 2 ,(+ 1 2))");
+        assertEquals(a("'(1 2 3.0)"), result);
+    }
+
+    @Test
+    public void eval_comma_at() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("`(1 2 ,@(list 1 2))");
+        assertEquals(a("'(1 2 1 2)"), result);
+    }
+
+    @Test
     public void stringList() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("`(\"bla\" 2 \"blu\")");
