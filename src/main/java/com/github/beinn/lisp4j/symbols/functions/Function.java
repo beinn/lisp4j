@@ -20,30 +20,31 @@ package com.github.beinn.lisp4j.symbols.functions;
 import java.util.Arrays;
 import java.util.List;
 
+import com.github.beinn.lisp4j.Interpreter;
 import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.NIL;
 import com.github.beinn.lisp4j.ast.SEXP;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
 public class Function  implements ISymbol {
 
     private String name;
-    private String params;
-    private String function;
+    private LIST params;
+    private LIST function;
+    private Interpreter interpreter;
 
-    public Function(final String funName, final String params, final String function) {
+    public Function(final String funName, final LIST args, final LIST body, final Interpreter interpreter) {
         this.name = funName;
-        this.params = params;
-        this.function = function;
+        this.params = args;
+        this.function = body;
+        this.interpreter = interpreter;
     }
 
-    public List<String>  getNames() {
+    public List<String> getNames() {
         return Arrays.asList(name);
     }
 
     public SEXP call(final LIST result) {
-        // TODO Auto-generated method stub
-        return new NIL();
+        return function.process(interpreter, true);
     }
 
 }

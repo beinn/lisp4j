@@ -39,14 +39,21 @@ public class DEFUNTest extends Base {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("(defun SUM () (+ 2 3))");
         assertEquals(a("SUM"), result);
-        result = lisp.execute("(SUM  2 3)");
+        result = lisp.execute("(SUM)");
         assertEquals(a("5.0"), result);
     }
     
     @Test
     public void defun_and_exec_same_line() {
         Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(defun SUM () (+ 2 3))(SUM  2 3)");
+        List<String> result = lisp.execute("(defun SUM () (+ 2 3))(SUM)");
+        assertEquals(a("SUM","5.0"), result);
+    }
+    
+    @Test
+    public void defun_and_exec_same_line_args() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(defun SUM (x y) (+ x y))(SUM  2 3)");
         assertEquals(a("SUM","5.0"), result);
     }
     
