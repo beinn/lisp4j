@@ -32,7 +32,7 @@ public class ATOMTest extends Base {
     @Test
     public void atom_symbol() {
         Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(atom `bla))");
+        List<String> result = lisp.execute("(atom `bla)");
         assertEquals(a("T"), result);
     }
    
@@ -40,7 +40,7 @@ public class ATOMTest extends Base {
     @Test
     public void atom_atom_sexp() {
         Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(atom (+ 2 3)))");
+        List<String> result = lisp.execute("(atom (+ 2 3))");
         assertEquals(a("T"), result);
     }
     

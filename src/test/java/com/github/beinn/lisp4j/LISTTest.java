@@ -31,7 +31,7 @@ public class LISTTest extends Base {
     @Test
     public void list() {
         Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(list 1 2 3))");
+        List<String> result = lisp.execute("(list 1 2 3)");
         assertEquals(a("(1 2 3)"), result);
     }
 

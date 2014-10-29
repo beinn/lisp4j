@@ -19,11 +19,13 @@ package com.github.beinn.lisp4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import com.github.beinn.lisp4j.packages.CommonLispPackage;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
+import com.github.beinn.lisp4j.exceptions.SyntaxErrorException;
 
 /**
  * 
@@ -39,13 +41,15 @@ public class Interpreter {
     public List<LispPackage> uses = new ArrayList<LispPackage>();
     public List<LispPackage> packages = new ArrayList<LispPackage>();
 
+    private boolean ignoreTooManyParenthesis = false;
+
     public Interpreter() {
-    	currentPackage = new LispPackage("common-lisp-user");
+        currentPackage = new LispPackage("common-lisp-user");
 
-    	uses.add(new CommonLispPackage(this));
-    	uses.add(currentPackage);
+        uses.add(new CommonLispPackage(this));
+        uses.add(currentPackage);
 
-    	packages.addAll(uses);
+        packages.addAll(uses);
     }
 
     /**
@@ -55,21 +59,19 @@ public class Interpreter {
      */
     public List<String> execute(final String code) {
 
-    	// lexical parsing
-    	final List<Token> tokens = lexParse(code);
-    	
-    	// syntactical parsing
-    	LIST ast = synParse(tokens);
-    	
-        ast = astGen(code);
+        // lexical parsing
+        final List<Token> tokens = lexParse(code);
+
+        // syntactical parsing
+        LIST ast = synParse(tokens);
 
         return ast.process(this, true).display();
     }
 
     @Deprecated
-	private LIST astGen(final String code) {
-    	state = EnumState.START;
-		final StringBuilder buffer = new StringBuilder();
+    private LIST astGen(final String code) {
+        state = EnumState.START;
+        final StringBuilder buffer = new StringBuilder();
         final LIST root = new LIST();
         root.noRoot = false;
         LIST list = root;
@@ -81,7 +83,7 @@ public class Interpreter {
                     state = EnumState.START;
                 }
             } else {
-                
+
                 if (c == '(') {
                     newAtom(buffer, aux);
                     list = aux;
@@ -100,7 +102,7 @@ public class Interpreter {
                     newAtom(buffer, aux);
                     state = EnumState.NO_EVAL;
                 } else if (c == ' ') {
-                    newAtom(buffer, aux); 
+                    newAtom(buffer, aux);
                 } else if (c == '"') {
                     newAtom(buffer, aux); // TODO
                 } else if (c == '|') {
@@ -114,16 +116,16 @@ public class Interpreter {
                 }
             }
         }
-		return root;
-	}
+        return root;
+    }
 
-	private List<Token> lexParse(final String code) {
-		final List<Token> tokens = new ArrayList<Token>();
-		final StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < code.length(); i++) {
-			char c = code.charAt(i);
-			if (state == EnumState.STRING) {
-				buffer.append(c);
+    private List<Token> lexParse(final String code) {
+        final List<Token> tokens = new ArrayList<Token>();
+        final StringBuilder buffer = new StringBuilder();
+        for (int i = 0; i < code.length(); i++) {
+            char c = code.charAt(i);
+            if (state == EnumState.STRING) {
+                buffer.append(c);
                 if (c == '"') {
                     createToken(tokens, buffer);
                 }
@@ -133,55 +135,86 @@ public class Interpreter {
                 }
             } else {
                 if (c == '(') {
-                	createToken(tokens, buffer);
-                	tokens.add(new Token("("));
+                    createToken(tokens, buffer);
+                    tokens.add(new Token("("));
                 } else if (c == ')') {
-                	createToken(tokens, buffer);
-                	tokens.add(new Token(")"));
+                    createToken(tokens, buffer);
+                    tokens.add(new Token(")"));
                 } else if (c == ';') {
-                	createToken(tokens, buffer);
-                	state = EnumState.COMMENT;
+                    createToken(tokens, buffer);
+                    state = EnumState.COMMENT;
                 } else if (c == '`') {
-                	createToken(tokens, buffer);
-                	tokens.add(new Token("`"));
-            	} else if( c == '\'') {
-            		createToken(tokens, buffer);
-                	tokens.add(new Token("'"));
+                    createToken(tokens, buffer);
+                    tokens.add(new Token("`"));
+                } else if (c == '\'') {
+                    createToken(tokens, buffer);
+                    tokens.add(new Token("'"));
                 } else if (c == ' ') {
-                	createToken(tokens, buffer);
+                    createToken(tokens, buffer);
                 } else if (c == '"') {
-                	state = EnumState.STRING;
+                    state = EnumState.STRING;
                 } else if (c == '|') {
                 } else if (c == '#') {
                 } else if (c == ',') {
                 } else if (c == '@') {
+                } else if (c == '\n') {
                 } else {
                     buffer.append(c);
                 }
             }
-		}
-		return tokens;
-	}
+        }
+        return tokens;
+    }
 
-	private void createToken(final List<Token> tokens,
-			final StringBuilder buffer) {
-		state = EnumState.START;
-		if (buffer.length() > 0) {
-			tokens.add(new Token(buffer.toString()));
-			buffer.setLength(0);
-		}
-	}
-    
+    private void createToken(final List<Token> tokens, final StringBuilder buffer) {
+        state = EnumState.START;
+        if (buffer.length() > 0) {
+            tokens.add(new Token(buffer.toString()));
+            buffer.setLength(0);
+        }
+    }
+
     private LIST synParse(final List<Token> tokens) {
-		final LIST root = new LIST();
-		for (final Token token:tokens) {
-			
-		}
-		return root;
-	}
+        final LIST root = new LIST();
+        root.noRoot = false;
+        final Stack<LIST> stack = new Stack<LIST>();
+        LIST current = root;
+        EnumState state = EnumState.START;
+        for (final Token token : tokens) {
+            if (token.token.equals("(")) {
+                final LIST list = new LIST();
+                if (state == EnumState.NO_EVAL) {
+                    list.eval = false;
+                    state = EnumState.START;
+                }
+                current.expression.add(list);
+                stack.push(current);
+                current = list;
+            } else if (token.token.equals(")")) {
+                if (!stack.isEmpty()) {
+                    current = stack.pop();
+                } else if (!ignoreTooManyParenthesis) {
+                    throw new SyntaxErrorException();
+                }
+            } else if (token.token.equals("'")) {
+                state = EnumState.NO_EVAL;
+            } else if (token.token.equals("`")) {
+                state = EnumState.NO_EVAL;
+            } else {
+                final ATOM atom = new ATOM();
+                if (state == EnumState.NO_EVAL) {
+                    atom.eval = false;
+                    state = EnumState.START;
+                }
+                atom.id = token.token;
+                current.expression.add(atom);
+            }
+        }
+        return root;
+    }
 
     @Deprecated
-	private void newAtom(final StringBuilder buffer, final LIST s_expression) {
+    private void newAtom(final StringBuilder buffer, final LIST s_expression) {
 
         if (buffer.length() > 0) {
             ATOM atom = new ATOM();
@@ -193,7 +226,7 @@ public class Interpreter {
             buffer.setLength(0);
             state = EnumState.START;
         }
-        
+
     }
 
     public boolean isHalted() {
@@ -202,5 +235,13 @@ public class Interpreter {
 
     public void setHalted(boolean b) {
         halted = b;
+    }
+
+    public boolean isIgnoreTooManyParenthesis() {
+        return ignoreTooManyParenthesis;
+    }
+
+    public void setIgnoreTooManyParenthesis(boolean b) {
+        ignoreTooManyParenthesis = b;
     }
 }

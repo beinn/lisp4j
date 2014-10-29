@@ -25,14 +25,9 @@ import java.util.List;
 import org.junit.Test;
 
 import com.github.beinn.lisp4j.Interpreter;
+import com.github.beinn.lisp4j.exceptions.SyntaxErrorException;
 
 public class SimpleNestingTest extends Base {
-
-    @Test(expected = Exception.class)
-    public void wrong_defun() {
-        Interpreter lisp = new Interpreter();
-        lisp.execute("(defun (SUMA) () (+ 2 3))");
-    }
 
     @Test
     public void nil() {
@@ -48,6 +43,20 @@ public class SimpleNestingTest extends Base {
         assertEquals(a("5.0"), result);
     }
 
+    @Test(expected = SyntaxErrorException.class)
+    public void tooManyParenthesis() {
+        Interpreter lisp = new Interpreter();
+        lisp.execute("(+ 2 3))");
+    }
+    
+    @Test
+    public void tooManyParenthesis_ignoreMode() {
+        Interpreter lisp = new Interpreter();
+        lisp.setIgnoreTooManyParenthesis(true);
+        List<String> result = lisp.execute("(+ 2 3))");
+        assertEquals(a("5.0"), result);
+    }
+    
     @Test
     public void simpleSum_with_spaces() {
         Interpreter lisp = new Interpreter();

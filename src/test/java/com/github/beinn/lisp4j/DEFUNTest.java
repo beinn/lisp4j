@@ -42,4 +42,17 @@ public class DEFUNTest extends Base {
         result = lisp.execute("(SUM  2 3)");
         assertEquals(a("5.0"), result);
     }
+    
+    @Test
+    public void defun_and_exec_same_line() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(defun SUM () (+ 2 3))(SUM  2 3)");
+        assertEquals(a("SUM","5.0"), result);
+    }
+    
+    @Test(expected = Exception.class)
+    public void wrong_defun() {
+        Interpreter lisp = new Interpreter();
+        lisp.execute("(defun (SUM) () (+ 2 3))");
+    }
 }

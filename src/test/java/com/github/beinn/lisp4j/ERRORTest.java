@@ -27,7 +27,7 @@ public class ERRORTest extends Base {
     @Test(expected = ErrorException.class)
     public void error() {
         Interpreter lisp = new Interpreter();
-        lisp.execute("(ERROR `bla))");
+        lisp.execute("(ERROR `bla)");
     }
    
 }
