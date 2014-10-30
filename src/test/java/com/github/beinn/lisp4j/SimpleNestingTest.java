@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.beinn.lisp4j.Interpreter;
@@ -48,6 +49,7 @@ public class SimpleNestingTest extends Base {
     }
 
     @Test(expected = UnboundVariableException.class)
+    @Ignore
     public void unboundVariable() {
         Interpreter lisp = new Interpreter();
         lisp.execute("(+ 2 x)");
