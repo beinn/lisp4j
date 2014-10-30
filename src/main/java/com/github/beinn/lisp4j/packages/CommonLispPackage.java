@@ -40,6 +40,7 @@ import com.github.beinn.lisp4j.symbols.functions.READLINEFunction;
 import com.github.beinn.lisp4j.symbols.functions.SECONDFunction;
 import com.github.beinn.lisp4j.symbols.functions.SQRTFunction;
 import com.github.beinn.lisp4j.symbols.functions.SUMFunction;
+import com.github.beinn.lisp4j.symbols.macros.Cond;
 import com.github.beinn.lisp4j.symbols.macros.Defmacro;
 import com.github.beinn.lisp4j.symbols.macros.Defun;
 
@@ -80,6 +81,7 @@ public class CommonLispPackage extends LispPackage {
         //Add macros
         addMacro(new Defmacro(interpreter));
         addMacro(new Defun(interpreter));
+        addMacro(new Cond(interpreter));
     }
 
 }
