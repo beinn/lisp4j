@@ -173,4 +173,12 @@ public class SimpleNestingTest extends Base {
         List<String> result = lisp.execute("(+ 1(+ 1(+ 1(+ 1))))");
         assertEquals(a("4.0"), result);
     }
+    
+    @Test
+    public void complex1() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(defparameter r 2)(defun circle-perimeter (r)(* 2 r pi))(circle-perimeter r)");
+        assertEquals(a("2","CIRCLE-PERIMETER","12.566370614359172"), result);
+    }
+
 }
