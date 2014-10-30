@@ -38,8 +38,8 @@ public class Defun implements ISymbol {
 	public SEXP call(final LIST result, LIST parent) {
 		final ATOM atom = new ATOM();
 		atom.id = ((ATOM)result.expression.get(1)).id.toUpperCase();
-		LIST args = ((LIST)result.expression.get(2));
-		LIST body = ((LIST)result.expression.get(3));
+		final LIST args = ((LIST)result.expression.get(2));
+		final LIST body = ((LIST)result.expression.get(3));
 		final Function function = new Function(atom.id,args,body, interpreter);
 		interpreter.currentPackage.functions.put(atom.id, function);
 		return atom;

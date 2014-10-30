@@ -20,22 +20,45 @@ package com.github.beinn.lisp4j.symbols.macros;
 import java.util.Arrays;
 import java.util.List;
 
+import com.github.beinn.lisp4j.Interpreter;
+import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.NIL;
 import com.github.beinn.lisp4j.ast.SEXP;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
 public class Macro implements ISymbol {
 
 	private String name;
+    private LIST params;
+    private LIST body;
+    private Interpreter interpreter;
 
-	public Macro(final String name) {
-		this.name = name;
+	public Macro(final String funName, final LIST args, final LIST body, final Interpreter interpreter) {
+        this.name = funName;
+        this.params = args;
+        this.body = body;
+        this.interpreter = interpreter;
 	}
 
-	public SEXP call(final LIST result, LIST parent) {
-		//TODO
-		return new NIL();
+	public SEXP call(final LIST result, final LIST parent) {
+	    final LIST newparent = new LIST();
+        for (int i =0; i< params.expression.size();i++) {
+            final ATOM symbol = (ATOM)params.expression.get(i);
+            final SEXP value = result.expression.get(1 + i);
+            final String sname = symbol.id.toUpperCase();
+            newparent.local.put(sname, new ISymbol() {
+                
+                public List<String> getNames() {
+                    return null;
+                }
+                
+                public SEXP call(final LIST result, final LIST parent) {
+                    return value;
+                }
+            });
+        }
+        newparent.parent = parent;
+        return body.process(interpreter, true, newparent);
 	}
 
 	public List<String> getNames() {

@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.github.beinn.lisp4j.Interpreter;
+import com.github.beinn.lisp4j.exceptions.UnboundVariableException;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
@@ -37,14 +38,19 @@ public class ATOM extends SEXP {
             Double.parseDouble(id);
             value = id;
         } catch (NumberFormatException nfe) {
-            final ISymbol symbol = recoverSymbol(interpreter, parent, id.toUpperCase());
-
-            if (symbol != null) {
-                value = ((ATOM) symbol.call(null, null)).id;
-            } else if ("NIL".equalsIgnoreCase(id)) {
-                value = "NIL";
-            } else {
+            if (id.startsWith("\"") && id.endsWith("\"")) {
                 value = id;
+            } else {
+                final ISymbol symbol = recoverSymbol(interpreter, parent, id.toUpperCase());
+
+                if (symbol != null) {
+                    value = ((ATOM) symbol.call(null, null)).id;
+                } else if ("NIL".equalsIgnoreCase(id)) {
+                    value = "NIL";
+                } else {
+                    value = id;
+                    //throw new UnboundVariableException(id);
+                }
             }
         }
 
@@ -77,20 +83,6 @@ public class ATOM extends SEXP {
             return val;
         }
         return findLocalSymbol(parent.parent, symbol);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ATOM)) {
-            return false;
-        }
-        final ATOM atom = (ATOM) obj;
-        return this.hashCode() == atom.hashCode();
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
     }
 
     @Override

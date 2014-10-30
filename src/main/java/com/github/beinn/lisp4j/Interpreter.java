@@ -67,7 +67,7 @@ public class Interpreter {
         final List<Token> tokens = lexParse(code);
 
         // syntactical parsing
-        LIST ast = synParse(tokens);
+        final LIST ast = synParse(tokens);
 
         return ast.process(this, true, null).display();
     }

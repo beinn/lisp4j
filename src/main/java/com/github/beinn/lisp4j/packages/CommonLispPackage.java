@@ -35,6 +35,8 @@ import com.github.beinn.lisp4j.symbols.functions.MULFunction;
 import com.github.beinn.lisp4j.symbols.functions.NOTFunction;
 import com.github.beinn.lisp4j.symbols.functions.NUMERICEQFunction;
 import com.github.beinn.lisp4j.symbols.functions.OPENFunction;
+import com.github.beinn.lisp4j.symbols.functions.READFunction;
+import com.github.beinn.lisp4j.symbols.functions.READLINEFunction;
 import com.github.beinn.lisp4j.symbols.functions.SECONDFunction;
 import com.github.beinn.lisp4j.symbols.functions.SQRTFunction;
 import com.github.beinn.lisp4j.symbols.functions.SUMFunction;
@@ -69,6 +71,8 @@ public class CommonLispPackage extends LispPackage {
         addFun(new LISTFunction());
         addFun(new HELPFunction(interpreter));
         addFun(new HaltFunction(interpreter));
+        addFun(new READFunction());
+        addFun(new READLINEFunction());
         
         //Add symbols
         addSymbol(new PIConstant());

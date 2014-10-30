@@ -35,10 +35,11 @@ public class Defmacro implements ISymbol {
 	}
 
 	public SEXP call(final LIST result, LIST parent) {
-		ATOM atom = new ATOM();
+		final ATOM atom = new ATOM();
 		atom.id = ((ATOM)result.expression.get(1)).id.toUpperCase();
-		
-		Macro macro = new Macro(atom.id);
+		final LIST args = ((LIST)result.expression.get(2));
+        final LIST body = ((LIST)result.expression.get(3));
+		final Macro macro = new Macro(atom.id, args, body, interpreter);
 		interpreter.currentPackage.macros.put(atom.id, macro);
 		return atom;
 	}

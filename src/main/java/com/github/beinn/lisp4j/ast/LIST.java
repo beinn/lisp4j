@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.beinn.lisp4j.Interpreter;
+import com.github.beinn.lisp4j.exceptions.UnboundVariableException;
 import com.github.beinn.lisp4j.exceptions.UndefinedFunctionException;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.symbols.ISymbol;
@@ -40,22 +41,30 @@ public class LIST extends SEXP {
         final boolean doit = (flag == FLAG.COMMA) || (eval && local_eval);
         final LIST result = new LIST();
         result.eval = eval;
-        //check if we are in a macro
-        if (!expression.isEmpty()){
-        	SEXP sexp = expression.get(0);
-	        ISymbol macro = null;
-	    	if (sexp instanceof ATOM) {
-	    		macro = recoverMacro(interpreter, ((ATOM)sexp).id.toUpperCase());
-	    	}
-	
-	    	if (macro != null && doit) {
-	    		// expand the macro
-	    		return macro.call(this, null).process(interpreter, true, this);
-	    	}
+        // check if we are in a macro
+        if (!expression.isEmpty()) {
+            SEXP sexp = expression.get(0);
+            ISymbol macro = null;
+            if (sexp instanceof ATOM) {
+                macro = recoverMacro(interpreter, ((ATOM) sexp).id.toUpperCase());
+            }
+
+            if (macro != null && doit) {
+                // expand the macro
+                return macro.call(this, null).process(interpreter, true, this);
+            }
         }
-        
+        int i = 0;
         for (final SEXP sexp : expression) {
-            result.expression.add(sexp.process(interpreter, doit, this));
+            //try {
+                result.expression.add(sexp.process(interpreter, doit, this));
+//            } catch (UnboundVariableException e) {
+//                if (i != 0 || noRoot) {
+//                    throw e;
+//                }
+//                result.expression.add(sexp);
+//            }
+//            i++;
             if (interpreter.isHalted()) {
                 break;
             }
@@ -81,26 +90,26 @@ public class LIST extends SEXP {
     }
 
     private ISymbol recoverFunction(final Interpreter interpreter, final String fname) {
-    	for(LispPackage p:interpreter.packages) {
-    		ISymbol f = p.functions.get(fname);
-        		if (f != null) {
-        			return f;
-        		}
-    	}
-		return null;
-	}
+        for (LispPackage p : interpreter.packages) {
+            ISymbol f = p.functions.get(fname);
+            if (f != null) {
+                return f;
+            }
+        }
+        return null;
+    }
 
     private ISymbol recoverMacro(final Interpreter interpreter, final String fname) {
-    	for(LispPackage p:interpreter.packages) {
-    		ISymbol f = p.macros.get(fname);
-        		if (f != null) {
-        			return f;
-        		}
-    	}
-		return null;
-	}
-    
-	@Override
+        for (LispPackage p : interpreter.packages) {
+            ISymbol f = p.macros.get(fname);
+            if (f != null) {
+                return f;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         if (!eval)
