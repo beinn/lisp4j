@@ -15,7 +15,7 @@
     </properties>
 
     <prerequisites>
-        <maven>2.2.1</maven>
+        <maven>3.0.4</maven>
     </prerequisites>
 
     <licenses>
@@ -103,7 +103,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.3</version>
+                <version>1.6.5</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
