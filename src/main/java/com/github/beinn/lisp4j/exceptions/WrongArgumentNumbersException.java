@@ -31,5 +31,9 @@ public class WrongArgumentNumbersException extends LispException {
     public WrongArgumentNumbersException(final String function) {
         this.function = function;
     }
+
+    public WrongArgumentNumbersException(int i) {
+        // TODO Auto-generated constructor stub
+    }
     
 }

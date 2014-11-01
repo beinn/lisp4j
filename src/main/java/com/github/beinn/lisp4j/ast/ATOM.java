@@ -24,6 +24,11 @@ import com.github.beinn.lisp4j.Interpreter;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
+/**
+ * 
+ * @author beinn
+ *
+ */
 public class ATOM extends SEXP {
 
     public String id;

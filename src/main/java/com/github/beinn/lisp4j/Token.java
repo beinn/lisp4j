@@ -17,6 +17,11 @@
  */
 package com.github.beinn.lisp4j;
 
+/**
+ * 
+ * @author beinn
+ *
+ */
 public class Token {
 
 	public String token;

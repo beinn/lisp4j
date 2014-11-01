@@ -17,6 +17,11 @@
  */
 package com.github.beinn.lisp4j;
 
+/**
+ * 
+ * @author elvis
+ *
+ */
 public enum EnumState {
     START, COMMENT, NO_EVAL, STRING
 

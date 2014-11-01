@@ -25,10 +25,18 @@ public class Options {
 
     private boolean ignoreTooManyParenthesis = false;
 
+    /**
+     * 
+     * @return
+     */
     public boolean isIgnoreTooManyParenthesis() {
         return ignoreTooManyParenthesis;
     }
 
+    /**
+     * 
+     * @param b
+     */
     public void setIgnoreTooManyParenthesis(boolean b) {
         ignoreTooManyParenthesis = b;
     }

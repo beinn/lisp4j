@@ -42,14 +42,25 @@ public class Interpreter {
 
     private Options options = new Options();
 
+    /**
+     * 
+     * @return
+     */
     public Options getOptions() {
         return options;
     }
 
-    public void setOptions(Options options) {
+    /**
+     * 
+     * @param options
+     */
+    public void setOptions(final Options options) {
         this.options = options;
     }
 
+    /**
+     * 
+     */
     public Interpreter() {
         setCurrentPackage(new LispPackage("common-lisp-user"));
 
@@ -60,6 +71,12 @@ public class Interpreter {
 
     }
 
+    /**
+     * 
+     * @param inputStream
+     * @return
+     * @throws IOException
+     */
     public List<String> execute(final InputStream inputStream) throws IOException {
 
         final LexicalParser lexical = new LexicalParser();
@@ -96,27 +113,51 @@ public class Interpreter {
         return ast.process(this, true, null).display();
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean isHalted() {
         return halted;
     }
 
+    /**
+     * 
+     * @param b
+     */
     public void setHalted(boolean b) {
         halted = b;
     }
 
+    /**
+     * 
+     * @return
+     */
     public LispPackage getCurrentPackage() {
         return currentPackage;
     }
 
-    public void setCurrentPackage(LispPackage currentPackage) {
+    /**
+     * 
+     * @param currentPackage
+     */
+    public void setCurrentPackage(final LispPackage currentPackage) {
         this.currentPackage = currentPackage;
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<LispPackage> getPackages() {
         return packages;
     }
 
-    public void setPackages(List<LispPackage> packages) {
+    /**
+     * 
+     * @param packages
+     */
+    public void setPackages(final List<LispPackage> packages) {
         this.packages = packages;
     }
 

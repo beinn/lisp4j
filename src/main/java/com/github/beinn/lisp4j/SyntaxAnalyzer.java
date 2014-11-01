@@ -39,6 +39,10 @@ public class SyntaxAnalyzer {
 
     private Options options;
 
+    /**
+     * 
+     * @param options
+     */
     public SyntaxAnalyzer(final Options options) {
         if (options == null) {
             throw new IllegalArgumentException("options can not be null");

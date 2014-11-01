@@ -37,19 +37,19 @@ public class LispPackage {
 		this.packageName = packageName;
 	}
 
-    protected void addFun(final ISymbol function) {
+	public void addFun(final ISymbol function) {
         for(final String name:function.getNames()){
             getFunctions().put(name, function);
         }
     }
 
-    protected void addSymbol(final ISymbol function) {
+	public void addSymbol(final ISymbol function) {
         for(final String name:function.getNames()){
             getSymbols().put(name, function);
         }
     }
 
-    protected void addMacro(final ISymbol function) {
+	public void addMacro(final ISymbol function) {
         for(final String name:function.getNames()){
             getMacros().put(name, function);
         }
@@ -67,7 +67,7 @@ public class LispPackage {
         return symbols;
     }
 
-    public void setSymbols(Map<String, ISymbol> symbols) {
+    public void setSymbols(final Map<String, ISymbol> symbols) {
         this.symbols = symbols;
     }
 
@@ -75,7 +75,7 @@ public class LispPackage {
         return functions;
     }
 
-    public void setFunctions(Map<String, ISymbol> functions) {
+    public void setFunctions(final Map<String, ISymbol> functions) {
         this.functions = functions;
     }
 
@@ -83,7 +83,7 @@ public class LispPackage {
         return macros;
     }
 
-    public void setMacros(Map<String, ISymbol> macros) {
+    public void setMacros(final Map<String, ISymbol> macros) {
         this.macros = macros;
     }
 }
