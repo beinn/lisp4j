@@ -36,11 +36,11 @@ public class Cond implements ISymbol {
     }
 
     public SEXP call(final LIST result, final LIST parent) {
-        for (int i = 1; i < result.expression.size(); i++) {
-            LIST statement = (LIST) result.expression.get(i);
-            final ATOM response = (ATOM) statement.expression.get(0);
+        for (int i = 1; i < result.getExpression().size(); i++) {
+            LIST statement = (LIST) result.getExpression().get(i);
+            final ATOM response = (ATOM) statement.getExpression().get(0);
             if (!"NIL".equalsIgnoreCase(response.id)) {
-                return statement.expression.get(1).process(interpreter, true, parent);
+                return statement.getExpression().get(1).process(interpreter, true, parent);
             }
         }
         return new NIL();

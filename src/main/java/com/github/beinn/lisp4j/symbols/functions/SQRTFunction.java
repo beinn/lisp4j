@@ -35,12 +35,12 @@ public class SQRTFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
 
-        if (result.expression.size() != 2) {
+        if (result.getExpression().size() != 2) {
             throw new WrongArgumentNumbersException("Errot: SQRT requires one argument");
         }
 
         final ATOM sexp = new ATOM();
-        sexp.id = String.valueOf(Math.sqrt(Numbers.checkNumeric(result.expression.get(1))));
+        sexp.id = String.valueOf(Math.sqrt(Numbers.checkNumeric(result.getExpression().get(1))));
 
         return sexp;
     }

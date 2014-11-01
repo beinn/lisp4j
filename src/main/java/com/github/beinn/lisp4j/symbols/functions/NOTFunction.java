@@ -33,13 +33,13 @@ public class NOTFunction implements ISymbol {
     }
 
     public SEXP call(final LIST result, LIST parent) {
-        if (result.expression.size() != 2) {
+        if (result.getExpression().size() != 2) {
             throw new WrongArgumentNumbersException("Errot: NOT requires only 1 argument");
         }
         final LIST lst = new LIST();
-        lst.expression.add(null);
-        lst.expression.add(new NIL());
-        lst.expression.add(result.expression.get(1));
+        lst.getExpression().add(null);
+        lst.getExpression().add(new NIL());
+        lst.getExpression().add(result.getExpression().get(1));
         return new EQFunction().call(lst, null);
     }
 

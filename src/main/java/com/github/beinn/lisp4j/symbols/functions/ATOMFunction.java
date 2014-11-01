@@ -35,10 +35,10 @@ public class ATOMFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
         final ATOM sexp;
-        if (result.expression.size() != 2) {
+        if (result.getExpression().size() != 2) {
             throw new WrongArgumentNumbersException("Errot: ATOM requires only 1 argument");
         }
-        if (result.expression.get(1) instanceof ATOM) {
+        if (result.getExpression().get(1) instanceof ATOM) {
             sexp = new ATOM();
             sexp.id = "T";
         } else {

@@ -36,11 +36,11 @@ public class LISTFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
         final LIST sexp = new LIST();
-        if (result.expression.size() == 1) {
+        if (result.getExpression().size() == 1) {
             return new NIL();
         }
-        for (int i = 1; i <result.expression.size();i++) {
-            sexp.expression.add(result.expression.get(i));
+        for (int i = 1; i <result.getExpression().size();i++) {
+            sexp.getExpression().add(result.getExpression().get(i));
         }
         
         return sexp;

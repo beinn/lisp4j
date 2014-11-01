@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.github.beinn.lisp4j.Interpreter;
-import com.github.beinn.lisp4j.exceptions.UnboundVariableException;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
@@ -65,8 +64,8 @@ public class ATOM extends SEXP {
             return val;
         }
         // global
-        for (final LispPackage p : interpreter.packages) {
-            final ISymbol s = p.symbols.get(symbol);
+        for (final LispPackage p : interpreter.getPackages()) {
+            final ISymbol s = p.getSymbols().get(symbol);
             if (s != null) {
                 return s;
             }
@@ -78,11 +77,11 @@ public class ATOM extends SEXP {
         if (parent == null) {
             return null;
         }
-        ISymbol val = parent.local.get(symbol);
+        ISymbol val = parent.getLocal().get(symbol);
         if (val != null) {
             return val;
         }
-        return findLocalSymbol(parent.parent, symbol);
+        return findLocalSymbol(parent.getParent(), symbol);
     }
 
     @Override

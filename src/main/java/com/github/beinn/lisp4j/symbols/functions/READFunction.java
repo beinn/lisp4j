@@ -33,8 +33,8 @@ public class READFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
         double acum = 0;
-        for (int i = 1; i < result.expression.size(); i++) {
-            acum += Double.parseDouble(((ATOM)result.expression.get(i)).id);
+        for (int i = 1; i < result.getExpression().size(); i++) {
+            acum += Double.parseDouble(((ATOM)result.getExpression().get(i)).id);
         }
         ATOM atom = new ATOM();
         atom.id = String.valueOf(acum);

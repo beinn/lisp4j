@@ -58,16 +58,16 @@ public class SimpleNestingTest extends Base {
     @Test(expected = SyntaxErrorException.class)
     public void tooManyParenthesis() {
         Interpreter lisp = new Interpreter();
-        assertFalse(lisp.isIgnoreTooManyParenthesis());
+        assertFalse(lisp.getOptions().isIgnoreTooManyParenthesis());
         lisp.execute("(+ 2 3))");
     }
 
     @Test
     public void tooManyParenthesis_ignoreMode() {
         Interpreter lisp = new Interpreter();
-        assertFalse(lisp.isIgnoreTooManyParenthesis());
-        lisp.setIgnoreTooManyParenthesis(true);
-        assertTrue(lisp.isIgnoreTooManyParenthesis());
+        assertFalse(lisp.getOptions().isIgnoreTooManyParenthesis());
+        lisp.getOptions().setIgnoreTooManyParenthesis(true);
+        assertTrue(lisp.getOptions().isIgnoreTooManyParenthesis());
         List<String> result = lisp.execute("(+ 2 3))");
         assertEquals(a("5.0"), result);
     }

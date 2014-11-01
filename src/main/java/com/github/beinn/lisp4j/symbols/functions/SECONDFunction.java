@@ -33,8 +33,8 @@ public class SECONDFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
         SEXP sexp;
-        if (result.expression.size() > 2 && result.expression.get(2) instanceof LIST && !((LIST)result.expression.get(2)).expression.isEmpty()) {
-            sexp = ((LIST)result.expression.get(2)).expression.get(0);
+        if (result.getExpression().size() > 2 && result.getExpression().get(2) instanceof LIST && !((LIST)result.getExpression().get(2)).getExpression().isEmpty()) {
+            sexp = ((LIST)result.getExpression().get(2)).getExpression().get(0);
         } else {
             sexp = new NIL();
         }

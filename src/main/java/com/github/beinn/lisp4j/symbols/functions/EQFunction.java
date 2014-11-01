@@ -35,10 +35,10 @@ public class EQFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
         final ATOM sexp;
-        if (result.expression.size() != 3) {
+        if (result.getExpression().size() != 3) {
             throw new WrongArgumentNumbersException("Errot: EQ requires only 2 argument");
         }
-        if (result.expression.get(1).equals(result.expression.get(2))) {
+        if (result.getExpression().get(1).equals(result.getExpression().get(2))) {
             sexp = new ATOM();
             sexp.id = "T";
         } else {

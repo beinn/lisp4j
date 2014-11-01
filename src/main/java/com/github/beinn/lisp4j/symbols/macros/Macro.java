@@ -42,11 +42,11 @@ public class Macro implements ISymbol {
 
 	public SEXP call(final LIST result, final LIST parent) {
 	    final LIST newparent = new LIST();
-        for (int i =0; i< params.expression.size();i++) {
-            final ATOM symbol = (ATOM)params.expression.get(i);
-            final SEXP value = result.expression.get(1 + i);
+        for (int i =0; i< params.getExpression().size();i++) {
+            final ATOM symbol = (ATOM)params.getExpression().get(i);
+            final SEXP value = result.getExpression().get(1 + i);
             final String sname = symbol.id.toUpperCase();
-            newparent.local.put(sname, new ISymbol() {
+            newparent.getLocal().put(sname, new ISymbol() {
                 
                 public List<String> getNames() {
                     return null;
@@ -57,7 +57,7 @@ public class Macro implements ISymbol {
                 }
             });
         }
-        newparent.parent = parent;
+        newparent.setParent(parent);
         return body.process(interpreter, true, newparent);
 	}
 

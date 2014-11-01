@@ -24,26 +24,26 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.beinn.lisp4j.Interpreter;
-import com.github.beinn.lisp4j.exceptions.UnboundVariableException;
 import com.github.beinn.lisp4j.exceptions.UndefinedFunctionException;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
 public class LIST extends SEXP {
-    public List<SEXP> expression = new ArrayList<SEXP>();
-    public Map<String, ISymbol> local = new HashMap<String, ISymbol>();
-    public LIST parent;
-    public boolean noRoot = true;
+
+    private List<SEXP> expression = new ArrayList<SEXP>();
+    private Map<String, ISymbol> local = new HashMap<String, ISymbol>();
+    private LIST parent;
+    private boolean noRoot = true;
 
     @Override
     public SEXP process(final Interpreter interpreter, final boolean local_eval, final LIST parent) {
-        this.parent = parent;
+        this.setParent(parent);
         final boolean doit = (flag == FLAG.COMMA) || (eval && local_eval);
         final LIST result = new LIST();
         result.eval = eval;
         // check if we are in a macro
-        if (!expression.isEmpty()) {
-            SEXP sexp = expression.get(0);
+        if (!getExpression().isEmpty()) {
+            SEXP sexp = getExpression().get(0);
             ISymbol macro = null;
             if (sexp instanceof ATOM) {
                 macro = recoverMacro(interpreter, ((ATOM) sexp).id.toUpperCase());
@@ -54,34 +54,26 @@ public class LIST extends SEXP {
                 return macro.call(this, null).process(interpreter, true, this);
             }
         }
-        int i = 0;
-        for (final SEXP sexp : expression) {
-            //try {
-                result.expression.add(sexp.process(interpreter, doit, this));
-//            } catch (UnboundVariableException e) {
-//                if (i != 0 || noRoot) {
-//                    throw e;
-//                }
-//                result.expression.add(sexp);
-//            }
-//            i++;
+
+        for (final SEXP sexp : getExpression()) {
+            result.getExpression().add(sexp.process(interpreter, doit, this));
             if (interpreter.isHalted()) {
                 break;
             }
         }
         SEXP results = null;
-        if (doit && !result.expression.isEmpty() && noRoot) {
-            final String fname = result.expression.get(0).toString().toUpperCase();
+        if (doit && !result.getExpression().isEmpty() && isNoRoot()) {
+            final String fname = result.getExpression().get(0).toString().toUpperCase();
             final ISymbol f = recoverFunction(interpreter, fname);
             if (f != null) {
                 results = f.call(result, null);
             } else {
                 throw new UndefinedFunctionException(fname);
             }
-        } else if (!noRoot) {
-            result.noRoot = noRoot;
+        } else if (!isNoRoot()) {
+            result.setNoRoot(noRoot);
             return result;
-        } else if (result.expression.isEmpty()) {
+        } else if (result.getExpression().isEmpty()) {
             return new NIL();
         } else if (!doit) {
             return result;
@@ -90,8 +82,8 @@ public class LIST extends SEXP {
     }
 
     private ISymbol recoverFunction(final Interpreter interpreter, final String fname) {
-        for (LispPackage p : interpreter.packages) {
-            ISymbol f = p.functions.get(fname);
+        for (LispPackage p : interpreter.getPackages()) {
+            ISymbol f = p.getFunctions().get(fname);
             if (f != null) {
                 return f;
             }
@@ -100,8 +92,8 @@ public class LIST extends SEXP {
     }
 
     private ISymbol recoverMacro(final Interpreter interpreter, final String fname) {
-        for (LispPackage p : interpreter.packages) {
-            ISymbol f = p.macros.get(fname);
+        for (LispPackage p : interpreter.getPackages()) {
+            ISymbol f = p.getMacros().get(fname);
             if (f != null) {
                 return f;
             }
@@ -114,9 +106,9 @@ public class LIST extends SEXP {
         final StringBuilder builder = new StringBuilder();
         if (!eval)
             builder.append("'");
-        if (noRoot)
+        if (isNoRoot())
             builder.append("(");
-        Iterator<SEXP> it = expression.iterator();
+        Iterator<SEXP> it = getExpression().iterator();
         while (it.hasNext()) {
             SEXP sexp = it.next();
             builder.append(sexp.toString());
@@ -124,7 +116,7 @@ public class LIST extends SEXP {
                 builder.append(" ");
             }
         }
-        if (noRoot)
+        if (isNoRoot())
             builder.append(")");
         return builder.toString();
     }
@@ -132,11 +124,43 @@ public class LIST extends SEXP {
     @Override
     public List<String> display() {
         final List<String> list = new ArrayList<String>();
-        Iterator<SEXP> it = expression.iterator();
+        Iterator<SEXP> it = getExpression().iterator();
         while (it.hasNext()) {
             SEXP sexp = it.next();
             list.add(sexp.toString());
         }
         return list;
+    }
+
+    public Map<String, ISymbol> getLocal() {
+        return local;
+    }
+
+    public void setLocal(Map<String, ISymbol> local) {
+        this.local = local;
+    }
+
+    public LIST getParent() {
+        return parent;
+    }
+
+    public void setParent(LIST parent) {
+        this.parent = parent;
+    }
+
+    public boolean isNoRoot() {
+        return noRoot;
+    }
+
+    public void setNoRoot(boolean noRoot) {
+        this.noRoot = noRoot;
+    }
+
+    public List<SEXP> getExpression() {
+        return expression;
+    }
+
+    public void setExpression(List<SEXP> expression) {
+        this.expression = expression;
     }
 }

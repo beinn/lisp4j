@@ -37,11 +37,11 @@ public class Defun implements ISymbol {
 
 	public SEXP call(final LIST result, LIST parent) {
 		final ATOM atom = new ATOM();
-		atom.id = ((ATOM)result.expression.get(1)).id.toUpperCase();
-		final LIST args = ((LIST)result.expression.get(2));
-		final LIST body = ((LIST)result.expression.get(3));
+		atom.id = ((ATOM)result.getExpression().get(1)).id.toUpperCase();
+		final LIST args = ((LIST)result.getExpression().get(2));
+		final LIST body = ((LIST)result.getExpression().get(3));
 		final Function function = new Function(atom.id,args,body, interpreter);
-		interpreter.currentPackage.functions.put(atom.id, function);
+		interpreter.getCurrentPackage().getFunctions().put(atom.id, function);
 		return atom;
 	}
 

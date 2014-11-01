@@ -37,11 +37,11 @@ public class NUMERICEQFunction implements ISymbol {
 
     public SEXP call(final LIST result, LIST parent) {
         final ATOM sexp;
-        if (result.expression.size() < 2) {
+        if (result.getExpression().size() < 2) {
             throw new WrongArgumentNumbersException("Errot: = requires more than zero argument");
         }
         boolean flag = true;
-        final Iterator<SEXP> it = result.expression.iterator();
+        final Iterator<SEXP> it = result.getExpression().iterator();
         it.next();
         final double f = Numbers.checkNumeric(it.next());
 

@@ -35,9 +35,9 @@ public class OPENFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
         ATOM atom = new NIL();
-        if(result.expression.size() > 1) {
-            if (result.expression.get(1) instanceof ATOM) {
-                String path = ((ATOM) result.expression.get(1)).id;
+        if(result.getExpression().size() > 1) {
+            if (result.getExpression().get(1) instanceof ATOM) {
+                String path = ((ATOM) result.getExpression().get(1)).id;
                 File file = new File(path);
                 atom = new ATOM();
                 atom.id = file.toString();

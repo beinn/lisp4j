@@ -15,33 +15,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.beinn.lisp4j.symbols.functions;
+package com.github.beinn.lisp4j;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.List;
 
-import com.github.beinn.lisp4j.ast.ATOM;
-import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.SEXP;
-import com.github.beinn.lisp4j.symbols.ISymbol;
+import org.junit.Test;
 
-/**
- * Multiplies numeric arguments.
- */
-public class MULFunction implements ISymbol {
+public class StreamIntegrationTest extends Base {
 
-    public List<String>  getNames() {
-        return Arrays.asList("*");
+    @Test
+    public void readFromInputStream() throws IOException {
+        Interpreter lisp = new Interpreter();
+        InputStream inputStream = new ByteArrayInputStream("(+ 2 3)".getBytes(Charset.defaultCharset()));
+        List<String> result = lisp.execute(inputStream);
+        assertEquals(a("5.0"), result);
     }
-
-    public SEXP call(LIST result, LIST parent) {
-        double acum = 1;
-        for (int i = 1; i < result.getExpression().size(); i++) {
-            acum *= Double.parseDouble(((ATOM)result.getExpression().get(i)).id);
-        }
-        ATOM atom = new ATOM();
-        atom.id = String.valueOf(acum);
-        return atom;
-    }
-
 }

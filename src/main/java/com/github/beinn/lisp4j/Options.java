@@ -15,33 +15,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.beinn.lisp4j.symbols.functions;
-
-import java.util.Arrays;
-import java.util.List;
-
-import com.github.beinn.lisp4j.ast.ATOM;
-import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.SEXP;
-import com.github.beinn.lisp4j.symbols.ISymbol;
+package com.github.beinn.lisp4j;
 
 /**
- * Multiplies numeric arguments.
+ * 
+ * @author beinn
  */
-public class MULFunction implements ISymbol {
+public class Options {
 
-    public List<String>  getNames() {
-        return Arrays.asList("*");
+    private boolean ignoreTooManyParenthesis = false;
+
+    public boolean isIgnoreTooManyParenthesis() {
+        return ignoreTooManyParenthesis;
     }
 
-    public SEXP call(LIST result, LIST parent) {
-        double acum = 1;
-        for (int i = 1; i < result.getExpression().size(); i++) {
-            acum *= Double.parseDouble(((ATOM)result.getExpression().get(i)).id);
-        }
-        ATOM atom = new ATOM();
-        atom.id = String.valueOf(acum);
-        return atom;
+    public void setIgnoreTooManyParenthesis(boolean b) {
+        ignoreTooManyParenthesis = b;
     }
 
 }

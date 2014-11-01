@@ -37,8 +37,8 @@ public class SUMFunction implements ISymbol {
 
     public SEXP call(final LIST result, LIST parent) {
         double acum = 0;
-        for (int i = 1; i < result.expression.size(); i++) {
-            acum += Numbers.checkNumeric(result.expression.get(i));
+        for (int i = 1; i < result.getExpression().size(); i++) {
+            acum += Numbers.checkNumeric(result.getExpression().get(i));
         }
         final ATOM atom = new ATOM();
         atom.id = String.valueOf(acum);

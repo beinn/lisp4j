@@ -41,11 +41,11 @@ public class DEFPARAMETERFunction implements ISymbol {
     public SEXP call(LIST result, LIST parent) {
         final ATOM atom = new ATOM();
         
-        if (result.expression.size() > 2) {
-            final String name = ((ATOM) result.expression.get(1)).id.toUpperCase();
-            final String value = ((ATOM) result.expression.get(2)).id;
+        if (result.getExpression().size() > 2) {
+            final String name = ((ATOM) result.getExpression().get(1)).id.toUpperCase();
+            final String value = ((ATOM) result.getExpression().get(2)).id;
             atom.id = value;
-            interpreter.currentPackage.symbols.put(name, new ISymbol() {
+            interpreter.getCurrentPackage().getSymbols().put(name, new ISymbol() {
                 
                 public List<String> getNames() {
                     return Arrays.asList(name);

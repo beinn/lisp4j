@@ -45,8 +45,8 @@ public class HELPFunction implements ISymbol {
     public SEXP call(LIST result, LIST parent) {
         final ATOM atom = new ATOM();
         final StringBuilder builder = new StringBuilder();
-        for (final LispPackage p:interpreter.packages) {
-	        for (final ISymbol f:p.functions.values()) {
+        for (final LispPackage p:interpreter.getPackages()) {
+	        for (final ISymbol f:p.getFunctions().values()) {
 	            builder.append(f.getNames()).append("\n");
 	        }
         }

@@ -33,8 +33,8 @@ public class CARFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
         SEXP sexp;
-        if (result.expression.size() > 1 && result.expression.get(1) instanceof LIST && !((LIST)result.expression.get(1)).expression.isEmpty()) {
-            sexp = ((LIST)result.expression.get(1)).expression.get(0);
+        if (result.getExpression().size() > 1 && result.getExpression().get(1) instanceof LIST && !((LIST)result.getExpression().get(1)).getExpression().isEmpty()) {
+            sexp = ((LIST)result.getExpression().get(1)).getExpression().get(0);
         } else {
             sexp = new NIL();
         }

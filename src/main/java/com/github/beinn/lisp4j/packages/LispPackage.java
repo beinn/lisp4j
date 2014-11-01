@@ -27,30 +27,63 @@ import com.github.beinn.lisp4j.symbols.ISymbol;
  */
 public class LispPackage {
 
-    public Map<String, ISymbol> symbols = new HashMap<String, ISymbol>();
-    public Map<String, ISymbol> functions = new HashMap<String, ISymbol>();
-    public Map<String, ISymbol> macros = new HashMap<String, ISymbol>();
+    private Map<String, ISymbol> symbols = new HashMap<String, ISymbol>();
+    private Map<String, ISymbol> functions = new HashMap<String, ISymbol>();
+    private Map<String, ISymbol> macros = new HashMap<String, ISymbol>();
 
-	public String packageName;
+	private String packageName;
+
 	public LispPackage(final String packageName) {
 		this.packageName = packageName;
 	}
 
     protected void addFun(final ISymbol function) {
         for(final String name:function.getNames()){
-            functions.put(name, function);
+            getFunctions().put(name, function);
         }
     }
 
     protected void addSymbol(final ISymbol function) {
         for(final String name:function.getNames()){
-            symbols.put(name, function);
+            getSymbols().put(name, function);
         }
     }
 
     protected void addMacro(final ISymbol function) {
         for(final String name:function.getNames()){
-            macros.put(name, function);
+            getMacros().put(name, function);
         }
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(final String packageName) {
+        this.packageName = packageName;
+    }
+
+    public Map<String, ISymbol> getSymbols() {
+        return symbols;
+    }
+
+    public void setSymbols(Map<String, ISymbol> symbols) {
+        this.symbols = symbols;
+    }
+
+    public Map<String, ISymbol> getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(Map<String, ISymbol> functions) {
+        this.functions = functions;
+    }
+
+    public Map<String, ISymbol> getMacros() {
+        return macros;
+    }
+
+    public void setMacros(Map<String, ISymbol> macros) {
+        this.macros = macros;
     }
 }

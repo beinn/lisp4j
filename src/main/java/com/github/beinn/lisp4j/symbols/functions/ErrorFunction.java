@@ -33,8 +33,8 @@ public class ErrorFunction implements ISymbol {
 
     public SEXP call(LIST result, LIST parent) {
         String msg = "";
-        if (result.expression.size() > 1) {
-            msg = result.expression.get(1).toString();
+        if (result.getExpression().size() > 1) {
+            msg = result.getExpression().get(1).toString();
         }
         throw new ErrorException(msg);
     }

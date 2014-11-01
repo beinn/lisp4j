@@ -33,11 +33,11 @@ public class CDRFunction implements ISymbol {
 
     public SEXP call(final LIST result, LIST parent) {
         SEXP sexp;
-        if (result.expression.size() > 1 && result.expression.get(1) instanceof LIST && ((LIST)result.expression.get(1)).expression.size() > 1) {
+        if (result.getExpression().size() > 1 && result.getExpression().get(1) instanceof LIST && ((LIST)result.getExpression().get(1)).getExpression().size() > 1) {
             LIST lst = new LIST();
-            List<SEXP> internal = ((LIST)result.expression.get(1)).expression;
+            List<SEXP> internal = ((LIST)result.getExpression().get(1)).getExpression();
             for (int i = 1; i < internal.size(); i++) {
-                lst.expression.add(internal.get(i));
+                lst.getExpression().add(internal.get(i));
             }
             sexp = lst;
         } else {
