@@ -26,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.beinn.lisp4j.Interpreter;
@@ -42,7 +43,13 @@ public class AddNewFunctionTest extends Base {
     @Test
     public void atom_symbol() {
         final Interpreter lisp = new Interpreter();
-        lisp.getCurrentPackage().addFun(new ISymbol() {
+        lisp.getCurrentPackage().addFun(calculateMD5());
+        List<String> result = lisp.execute("(foo 1)");
+        assertEquals(a("c4ca4238a0b923820dcc509a6f75849b"), result);
+    }
+
+    private ISymbol calculateMD5() {
+        return new ISymbol() {
 
             public List<String> getNames() {
                 return Arrays.asList("FOO");
@@ -86,9 +93,7 @@ public class AddNewFunctionTest extends Base {
                 // return the result
                 return atom;
             }
-        });
-        List<String> result = lisp.execute("(foo 1)");
-        assertEquals(a("c4ca4238a0b923820dcc509a6f75849b"), result);
+        };
     }
 
 }

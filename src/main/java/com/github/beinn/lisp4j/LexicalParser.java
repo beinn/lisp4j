@@ -84,6 +84,8 @@ public class LexicalParser {
                     tokens.get(tokens.size() - 1).token = ",@";
                 }
             } else if (c == '\n') {
+            } else if (c == '\r') {
+            } else if (c == '\t') {
             } else {
                 buffer.append(c);
             }

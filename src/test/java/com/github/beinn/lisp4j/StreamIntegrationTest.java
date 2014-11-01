@@ -20,6 +20,8 @@ package com.github.beinn.lisp4j;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -35,5 +37,21 @@ public class StreamIntegrationTest extends Base {
         InputStream inputStream = new ByteArrayInputStream("(+ 2 3)".getBytes(Charset.defaultCharset()));
         List<String> result = lisp.execute(inputStream);
         assertEquals(a("5.0"), result);
+    }
+    
+    @Test
+    public void readFromInputFile_utf8() throws IOException {
+        Interpreter lisp = new Interpreter();
+        InputStream inputStream = new FileInputStream(new File("src/test/resources/test1utf8.lisp"));
+        List<String> result = lisp.execute(inputStream);
+        assertEquals(a("5.0","5.0","6.0", "12.0", "6.0", "12.0"), result);
+    }
+    
+    @Test
+    public void readFromInputFile_cp1252() throws IOException {
+        Interpreter lisp = new Interpreter();
+        InputStream inputStream = new FileInputStream(new File("src/test/resources/test1cp1252.lisp"));
+        List<String> result = lisp.execute(inputStream);
+        assertEquals(a("5.0","5.0","6.0", "12.0", "6.0", "12.0"), result);
     }
 }

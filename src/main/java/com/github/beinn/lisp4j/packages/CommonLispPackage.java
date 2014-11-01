@@ -31,6 +31,7 @@ import com.github.beinn.lisp4j.symbols.functions.ErrorFunction;
 import com.github.beinn.lisp4j.symbols.functions.HELPFunction;
 import com.github.beinn.lisp4j.symbols.functions.HaltFunction;
 import com.github.beinn.lisp4j.symbols.functions.LISTFunction;
+import com.github.beinn.lisp4j.symbols.functions.LOADFunction;
 import com.github.beinn.lisp4j.symbols.functions.MULFunction;
 import com.github.beinn.lisp4j.symbols.functions.NOTFunction;
 import com.github.beinn.lisp4j.symbols.functions.NUMERICEQFunction;
@@ -54,6 +55,7 @@ public class CommonLispPackage extends LispPackage {
 
     	// Add functions
         addFun(new NOTFunction());
+        addFun(new LOADFunction(interpreter));
         addFun(new DistinctFunction());
         addFun(new MULFunction());
         addFun(new SUMFunction());
