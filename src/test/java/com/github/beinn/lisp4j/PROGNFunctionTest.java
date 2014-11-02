@@ -23,23 +23,33 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.github.beinn.lisp4j.Interpreter;
-
-public class LOADTest extends Base {
+public class PROGNFunctionTest extends Base {
 
     @Test
-    public void simple() {
+    public void nil() {
         Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(load \"src/test/resources/test1cp1252.lisp\")");
-        assertEquals(a("T"), result);
+        List<String> result = lisp.execute("(progn)");
+        assertEquals(a("NIL"), result);
     }
 
     @Test
-    public void circle() {
+    public void one() {
         Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(load \"src/test/resources/circlecp1252.lisp\")");
-        assertEquals(a("T"), result);
-        result = lisp.execute("(circle-perimeter 2)");
-        assertEquals(a("12.566370614359172"), result);
+        List<String> result = lisp.execute("(progn (+ 2 3))");
+        assertEquals(a("5.0"), result);
+    }
+
+    @Test
+    public void two() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(progn (+ 2 3)())");
+        assertEquals(a("NIL"), result);
+    }
+
+    @Test
+    public void three() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(progn (+ 2 3)() (* 2 3))");
+        assertEquals(a("6.0"), result);
     }
 }

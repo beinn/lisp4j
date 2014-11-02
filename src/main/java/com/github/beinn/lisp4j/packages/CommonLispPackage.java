@@ -36,6 +36,7 @@ import com.github.beinn.lisp4j.symbols.functions.MULFunction;
 import com.github.beinn.lisp4j.symbols.functions.NOTFunction;
 import com.github.beinn.lisp4j.symbols.functions.NUMERICEQFunction;
 import com.github.beinn.lisp4j.symbols.functions.OPENFunction;
+import com.github.beinn.lisp4j.symbols.functions.PROGNFunction;
 import com.github.beinn.lisp4j.symbols.functions.READFunction;
 import com.github.beinn.lisp4j.symbols.functions.READLINEFunction;
 import com.github.beinn.lisp4j.symbols.functions.SECONDFunction;
@@ -67,6 +68,7 @@ public class CommonLispPackage extends LispPackage {
         addFun(new CONSFunction());
         addFun(new OPENFunction());
         addFun(new SECONDFunction());
+        addFun(new PROGNFunction());
         addFun(new ATOMFunction());
         addFun(new SQRTFunction());
         addFun(new EQFunction());

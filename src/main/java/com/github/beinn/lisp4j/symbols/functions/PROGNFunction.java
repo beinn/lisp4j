@@ -15,31 +15,33 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.beinn.lisp4j;
+package com.github.beinn.lisp4j.symbols.functions;
 
-import static org.junit.Assert.assertEquals;
-
+import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import com.github.beinn.lisp4j.ast.ATOM;
+import com.github.beinn.lisp4j.ast.LIST;
+import com.github.beinn.lisp4j.ast.NIL;
+import com.github.beinn.lisp4j.ast.SEXP;
+import com.github.beinn.lisp4j.symbols.ISymbol;
 
-import com.github.beinn.lisp4j.Interpreter;
+public class PROGNFunction implements ISymbol {
 
-public class LOADTest extends Base {
-
-    @Test
-    public void simple() {
-        Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(load \"src/test/resources/test1cp1252.lisp\")");
-        assertEquals(a("T"), result);
+    public List<String>  getNames() {
+        return Arrays.asList("PROGN");
     }
 
-    @Test
-    public void circle() {
-        Interpreter lisp = new Interpreter();
-        List<String> result = lisp.execute("(load \"src/test/resources/circlecp1252.lisp\")");
-        assertEquals(a("T"), result);
-        result = lisp.execute("(circle-perimeter 2)");
-        assertEquals(a("12.566370614359172"), result);
+    public SEXP call(final LIST result, final LIST parent) {
+        final SEXP sexp;
+
+        if (result.getExpression().size() > 1) {
+            sexp = result.getExpression().get(result.getExpression().size() - 1);
+        } else {
+            sexp = new NIL(); 
+        }
+        
+        return sexp;
     }
+
 }

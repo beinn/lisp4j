@@ -31,7 +31,7 @@ public class SECONDFunction implements ISymbol {
         return Arrays.asList("SECOND");
     }
 
-    public SEXP call(LIST result, LIST parent) {
+    public SEXP call(final LIST result, final LIST parent) {
         SEXP sexp;
         if (result.getExpression().size() > 2 && result.getExpression().get(2) instanceof LIST && !((LIST)result.getExpression().get(2)).getExpression().isEmpty()) {
             sexp = ((LIST)result.getExpression().get(2)).getExpression().get(0);
