@@ -36,6 +36,7 @@ public class StreamIntegrationTest extends Base {
         Interpreter lisp = new Interpreter();
         InputStream inputStream = new ByteArrayInputStream("(+ 2 3)".getBytes(Charset.defaultCharset()));
         List<String> result = lisp.execute(inputStream);
+        inputStream.close();
         assertEquals(a("5.0"), result);
     }
     
@@ -44,6 +45,7 @@ public class StreamIntegrationTest extends Base {
         Interpreter lisp = new Interpreter();
         InputStream inputStream = new FileInputStream(new File("src/test/resources/test1utf8.lisp"));
         List<String> result = lisp.execute(inputStream);
+        inputStream.close();
         assertEquals(a("5.0","5.0","6.0", "12.0", "6.0", "12.0"), result);
     }
     
@@ -52,6 +54,7 @@ public class StreamIntegrationTest extends Base {
         Interpreter lisp = new Interpreter();
         InputStream inputStream = new FileInputStream(new File("src/test/resources/test1cp1252.lisp"));
         List<String> result = lisp.execute(inputStream);
+        inputStream.close();
         assertEquals(a("5.0","5.0","6.0", "12.0", "6.0", "12.0"), result);
     }
 }
