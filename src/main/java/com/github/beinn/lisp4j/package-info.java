@@ -17,6 +17,6 @@
  */
 
 /**
- * 
+ * This is the core lisp4j package
  */
 package com.github.beinn.lisp4j;

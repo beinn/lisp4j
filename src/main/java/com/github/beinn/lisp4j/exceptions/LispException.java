@@ -17,6 +17,10 @@
  */
 package com.github.beinn.lisp4j.exceptions;
 
+/**
+ * This is the parent exception of all lisp4j exception. All are unchecked
+ * exceptions because they take place due to programming errors. 
+ */
 public class LispException extends RuntimeException {
 
     /**

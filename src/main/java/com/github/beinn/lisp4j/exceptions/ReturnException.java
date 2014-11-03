@@ -19,6 +19,10 @@ package com.github.beinn.lisp4j.exceptions;
 
 import com.github.beinn.lisp4j.ast.SEXP;
 
+/**
+ * This is a special exception which is threw by the RETURN function placed
+ * inside of a LOOP.
+ */
 public class ReturnException extends LispException {
 
     private final SEXP result;

@@ -17,6 +17,9 @@
  */
 package com.github.beinn.lisp4j.exceptions;
 
+/**
+ * A variable that has not been declared
+ */
 public class UnboundVariableException extends LispException {
 
     /**

@@ -17,6 +17,6 @@
  */
 
 /**
- * This is the core lisp4j exceptions package.
+ * Contains the Lisp Abstract Syntaxt Tree classes.
  */
 package com.github.beinn.lisp4j.ast;

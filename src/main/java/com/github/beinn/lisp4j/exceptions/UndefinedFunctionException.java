@@ -17,10 +17,13 @@
  */
 package com.github.beinn.lisp4j.exceptions;
 
+/**
+ * It is throw when the called function cannot be found in any of the packages
+ */
 public class UndefinedFunctionException extends LispException {
 
     /**
-     * 
+     * Serial Id.
      */
     private static final long serialVersionUID = 1521418779213724993L;
     private String function;
