@@ -23,6 +23,7 @@ import java.util.List;
 import com.github.beinn.lisp4j.Interpreter;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.symbols.ISymbol;
+import com.github.beinn.lisp4j.symbols.Variable;
 
 /**
  * 
@@ -43,31 +44,36 @@ public class ATOM extends SEXP {
 
     @Override
     public SEXP process(final Interpreter interpreter, final boolean b, final LIST parent) {
-        final ATOM atom = new ATOM();
-        String value = null;
-
+         SEXP sexp;
+        ATOM atom = new ATOM();
+        
         try {
             Double.parseDouble(id);
-            value = id;
+            
+            atom.id = id;
+            sexp = atom;
         } catch (NumberFormatException nfe) {
             if (id.startsWith("\"") && id.endsWith("\"")) {
-                value = id;
+                atom.id = id;
+                sexp = atom;
             } else {
-                final ISymbol symbol = parent.recoverSymbol(interpreter, id.toUpperCase());
+                final Variable symbol = parent.recoverSymbol(interpreter, id.toUpperCase());
 
                 if (symbol != null) {
-                    value = ((ATOM) symbol.call(null, null)).id;
+                    sexp = symbol.getValue();
                 } else if ("NIL".equalsIgnoreCase(id)) {
-                    value = "NIL";
+                    atom.id = "NIL";
+                    sexp = atom;
                 } else {
-                    value = id;
+                    atom.id = id;
+                    sexp = atom;
                     //throw new UnboundVariableException(id);
                 }
             }
         }
 
-        atom.id = value;
-        return atom;
+
+        return sexp;
     }
 
     @Override

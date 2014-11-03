@@ -38,7 +38,7 @@ public class Cond implements ISymbol {
     public SEXP call(final LIST result, final LIST parent) {
         for (int i = 1; i < result.getExpression().size(); i++) {
             LIST statement = (LIST) result.getExpression().get(i);
-            final ATOM response = (ATOM) statement.getExpression().get(0);
+            final ATOM response = (ATOM) statement.getExpression().get(0).process(interpreter, true, parent);
             if (!"NIL".equalsIgnoreCase(response.getId())) {
                 return statement.getExpression().get(1).process(interpreter, true, parent);
             }

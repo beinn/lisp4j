@@ -23,17 +23,23 @@ import java.util.List;
 import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
 import com.github.beinn.lisp4j.ast.SEXP;
-import com.github.beinn.lisp4j.symbols.ISymbol;
+import com.github.beinn.lisp4j.symbols.Variable;
 
-public class PIConstant implements ISymbol {
+public class PIConstant extends Variable {
 
-    public List<String>  getNames() {
+    public PIConstant() {
+        super(null);
+        setValue(call(null,null));
+    }
+
+    public List<String> getNames() {
         return Arrays.asList("PI");
     }
 
     public SEXP call(final LIST result, LIST parent) {
         ATOM atom = new ATOM();
         atom.setId(String.valueOf(Math.PI));
+        
         return atom;
     }
 

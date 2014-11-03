@@ -25,6 +25,7 @@ import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
 import com.github.beinn.lisp4j.ast.SEXP;
 import com.github.beinn.lisp4j.symbols.ISymbol;
+import com.github.beinn.lisp4j.symbols.Variable;
 
 public class Function implements ISymbol {
 
@@ -50,16 +51,7 @@ public class Function implements ISymbol {
             final ATOM symbol = (ATOM)params.getExpression().get(i);
             final SEXP value = result.getExpression().get(1 + i);
             final String sname = symbol.getId().toUpperCase();
-            newparent.getLocal().put(sname, new ISymbol() {
-                
-                public List<String> getNames() {
-                    return null;
-                }
-                
-                public SEXP call(LIST result, LIST parent) {
-                    return value;
-                }
-            });
+            newparent.getLocal().put(sname, new Variable(value));
         }
         newparent.setParent(parent);
         return function.process(interpreter, true, newparent);

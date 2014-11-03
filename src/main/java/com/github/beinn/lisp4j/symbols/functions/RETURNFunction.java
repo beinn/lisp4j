@@ -20,27 +20,24 @@ package com.github.beinn.lisp4j.symbols.functions;
 import java.util.Arrays;
 import java.util.List;
 
+import com.github.beinn.lisp4j.symbols.functions.utils.Numbers;
+import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.NIL;
 import com.github.beinn.lisp4j.ast.SEXP;
+import com.github.beinn.lisp4j.exceptions.ReturnException;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
-public class PROGNFunction implements ISymbol {
+/**
+ * Sums numeric arguments.
+ */
+public class RETURNFunction implements ISymbol {
 
-    public List<String>  getNames() {
-        return Arrays.asList("PROGN");
+    public List<String> getNames() {
+        return Arrays.asList("RETURN");
     }
 
-    public SEXP call(final LIST result, final LIST parent) {
-        final SEXP sexp;
-
-        if (result.getExpression().size() > 1) {
-            sexp = result.getExpression().get(result.getExpression().size() - 1);
-        } else {
-            sexp = new NIL(); 
-        }
-        
-        return sexp;
+    public SEXP call(final LIST result, LIST parent) {
+        throw new ReturnException(result.getExpression().get(1));
     }
 
 }

@@ -15,32 +15,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.beinn.lisp4j.symbols.functions;
+package com.github.beinn.lisp4j.exceptions;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.NIL;
 import com.github.beinn.lisp4j.ast.SEXP;
-import com.github.beinn.lisp4j.symbols.ISymbol;
 
-public class PROGNFunction implements ISymbol {
+public class ReturnException extends LispException {
 
-    public List<String>  getNames() {
-        return Arrays.asList("PROGN");
+    private final SEXP result;
+
+    public ReturnException(final SEXP sexp) {
+        this.result = sexp;
     }
 
-    public SEXP call(final LIST result, final LIST parent) {
-        final SEXP sexp;
-
-        if (result.getExpression().size() > 1) {
-            sexp = result.getExpression().get(result.getExpression().size() - 1);
-        } else {
-            sexp = new NIL(); 
-        }
-        
-        return sexp;
+    public SEXP getResult() {
+        return result;
     }
+
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3840298093679441217L;
 
 }

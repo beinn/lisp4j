@@ -21,40 +21,34 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.github.beinn.lisp4j.Interpreter;
-import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
 import com.github.beinn.lisp4j.ast.SEXP;
+import com.github.beinn.lisp4j.exceptions.ReturnException;
 import com.github.beinn.lisp4j.symbols.ISymbol;
-import com.github.beinn.lisp4j.symbols.Variable;
 
-public class Macro implements ISymbol {
+public class Loop implements ISymbol {
 
-	private String name;
-    private LIST params;
-    private LIST body;
     private Interpreter interpreter;
 
-	public Macro(final String funName, final LIST args, final LIST body, final Interpreter interpreter) {
-        this.name = funName;
-        this.params = args;
-        this.body = body;
+    public Loop(final Interpreter interpreter) {
         this.interpreter = interpreter;
-	}
+    }
 
-	public SEXP call(final LIST result, final LIST parent) {
-	    final LIST newparent = new LIST();
-        for (int i =0; i< params.getExpression().size();i++) {
-            final ATOM symbol = (ATOM)params.getExpression().get(i);
-            final SEXP value = result.getExpression().get(1 + i);
-            final String sname = symbol.getId().toUpperCase();
-            newparent.getLocal().put(sname,new Variable(value));
+    public List<String> getNames() {
+        return Arrays.asList("LOOP");
+    }
+
+    public SEXP call(final LIST result, final LIST parent) {
+        try {
+            while (true) {
+                for (int i = 1; i < result.getExpression().size(); i++) {
+                    result.getExpression().get(i).process(interpreter, true, parent);
+                }
+            }
+        } catch (ReturnException e) {
+            return e.getResult();
         }
-        newparent.setParent(parent);
-        return body.process(interpreter, true, newparent);
-	}
 
-	public List<String> getNames() {
-		return Arrays.asList(name);
-	}
+    }
 
 }

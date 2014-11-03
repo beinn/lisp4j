@@ -25,6 +25,7 @@ import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
 import com.github.beinn.lisp4j.ast.SEXP;
 import com.github.beinn.lisp4j.symbols.ISymbol;
+import com.github.beinn.lisp4j.symbols.Variable;
 
 public class Let implements ISymbol {
 
@@ -41,19 +42,8 @@ public class Let implements ISymbol {
         for (SEXP s:vars) {
         	List<SEXP> statements = ((LIST)s).getExpression();
         	final String name = ((ATOM) statements.get(0)).getId().toUpperCase();
-        	final String value = ((ATOM) statements.get(1).process(interpreter, true, parent)).getId();
-    		final ATOM atom = new ATOM();
-    		atom.setId(value);
-        	newparent.getLocal().put(name, new ISymbol() {
-                
-                public List<String> getNames() {
-                    return null;
-                }
-                
-                public SEXP call(final LIST result, final LIST parent) {
-                    return atom;
-                }
-            });
+        	final ATOM value = (ATOM) statements.get(1).process(interpreter, true, parent);
+        	newparent.getLocal().put(name, new Variable(value));
         }
         newparent.setParent(parent);
         return body.process(interpreter, true, newparent);

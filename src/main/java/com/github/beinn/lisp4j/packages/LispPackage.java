@@ -21,13 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.github.beinn.lisp4j.symbols.ISymbol;
+import com.github.beinn.lisp4j.symbols.Variable;
 
 /**
  * 
  */
 public class LispPackage {
 
-    private Map<String, ISymbol> symbols = new HashMap<String, ISymbol>();
+    private Map<String, Variable> symbols = new HashMap<String, Variable>();
     private Map<String, ISymbol> functions = new HashMap<String, ISymbol>();
     private Map<String, ISymbol> macros = new HashMap<String, ISymbol>();
 
@@ -43,7 +44,7 @@ public class LispPackage {
         }
     }
 
-	public void addSymbol(final ISymbol function) {
+	public void addSymbol(final Variable function) {
         for(final String name:function.getNames()){
             getSymbols().put(name, function);
         }
@@ -63,11 +64,11 @@ public class LispPackage {
         this.packageName = packageName;
     }
 
-    public Map<String, ISymbol> getSymbols() {
+    public Map<String, Variable> getSymbols() {
         return symbols;
     }
 
-    public void setSymbols(final Map<String, ISymbol> symbols) {
+    public void setSymbols(final Map<String, Variable> symbols) {
         this.symbols = symbols;
     }
 

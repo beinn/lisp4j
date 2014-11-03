@@ -23,38 +23,37 @@ import java.util.List;
 import com.github.beinn.lisp4j.Interpreter;
 import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
+import com.github.beinn.lisp4j.ast.NIL;
 import com.github.beinn.lisp4j.ast.SEXP;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 import com.github.beinn.lisp4j.symbols.Variable;
 
-public class Macro implements ISymbol {
+/**
+ * Builds a new list taking the arguments as elements.
+ */
+public class Setf implements ISymbol {
 
-	private String name;
-    private LIST params;
-    private LIST body;
     private Interpreter interpreter;
 
-	public Macro(final String funName, final LIST args, final LIST body, final Interpreter interpreter) {
-        this.name = funName;
-        this.params = args;
-        this.body = body;
+    public Setf(Interpreter interpreter) {
         this.interpreter = interpreter;
-	}
+    }
 
-	public SEXP call(final LIST result, final LIST parent) {
-	    final LIST newparent = new LIST();
-        for (int i =0; i< params.getExpression().size();i++) {
-            final ATOM symbol = (ATOM)params.getExpression().get(i);
-            final SEXP value = result.getExpression().get(1 + i);
-            final String sname = symbol.getId().toUpperCase();
-            newparent.getLocal().put(sname,new Variable(value));
+    public List<String> getNames() {
+        return Arrays.asList("SETF");
+    }
+
+    public SEXP call(final LIST result, final LIST parent) {
+        final SEXP value = result.getExpression().get(2).process(interpreter, true, parent);
+        final String name = ((ATOM) result.getExpression().get(1)).getId().toUpperCase();
+        Variable variable = parent.recoverSymbol(interpreter, name);
+        if (variable == null) {
+            variable = new Variable(value);
+            parent.getLocal().put(name, variable);
+        } else {
+            variable.setValue(value);
         }
-        newparent.setParent(parent);
-        return body.process(interpreter, true, newparent);
-	}
-
-	public List<String> getNames() {
-		return Arrays.asList(name);
-	}
+        return value;
+    }
 
 }

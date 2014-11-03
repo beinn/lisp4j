@@ -27,11 +27,12 @@ import com.github.beinn.lisp4j.Interpreter;
 import com.github.beinn.lisp4j.exceptions.UndefinedFunctionException;
 import com.github.beinn.lisp4j.packages.LispPackage;
 import com.github.beinn.lisp4j.symbols.ISymbol;
+import com.github.beinn.lisp4j.symbols.Variable;
 
 public class LIST extends SEXP {
 
 	private List<SEXP> expression = new ArrayList<SEXP>();
-	private Map<String, ISymbol> local = new HashMap<String, ISymbol>();
+	private Map<String, Variable> local = new HashMap<String, Variable>();
 	private LIST parent;
 	private boolean noRoot = true;
 
@@ -53,7 +54,7 @@ public class LIST extends SEXP {
 
 			if (macro != null && doit) {
 				// expand the macro
-				return macro.call(this, null).process(interpreter, true, this);
+				return macro.call(this, this).process(interpreter, true, this);
 			}
 		}
 
@@ -137,11 +138,11 @@ public class LIST extends SEXP {
 		return list;
 	}
 
-	public Map<String, ISymbol> getLocal() {
+	public Map<String, Variable> getLocal() {
 		return local;
 	}
 
-	public void setLocal(Map<String, ISymbol> local) {
+	public void setLocal(Map<String, Variable> local) {
 		this.local = local;
 	}
 
@@ -169,8 +170,8 @@ public class LIST extends SEXP {
 		this.expression = expression;
 	}
 
-	public ISymbol findLocalSymbol(final String symbol) {
-		final ISymbol val = getLocal().get(symbol);
+	public Variable findLocalSymbol(final String symbol) {
+		final Variable val = getLocal().get(symbol);
 		if (val != null) {
 			return val;
 		}
@@ -180,14 +181,14 @@ public class LIST extends SEXP {
 		return null;
 	}
 
-	public ISymbol recoverSymbol(final Interpreter interpreter,
+	public Variable recoverSymbol(final Interpreter interpreter,
 			final String symbol) {
-		final ISymbol val = findLocalSymbol(symbol);
+		final Variable val = findLocalSymbol(symbol);
 		if (val != null) {
 			return val;
 		}
 		for (final LispPackage p : interpreter.getPackages()) {
-			final ISymbol s = p.getSymbols().get(symbol);
+			final Variable s = p.getSymbols().get(symbol);
 			if (s != null) {
 				return s;
 			}

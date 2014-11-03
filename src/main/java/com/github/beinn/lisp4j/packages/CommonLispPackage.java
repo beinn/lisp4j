@@ -39,6 +39,7 @@ import com.github.beinn.lisp4j.symbols.functions.OPENFunction;
 import com.github.beinn.lisp4j.symbols.functions.PROGNFunction;
 import com.github.beinn.lisp4j.symbols.functions.READFunction;
 import com.github.beinn.lisp4j.symbols.functions.READLINEFunction;
+import com.github.beinn.lisp4j.symbols.functions.RETURNFunction;
 import com.github.beinn.lisp4j.symbols.functions.SECONDFunction;
 import com.github.beinn.lisp4j.symbols.functions.SQRTFunction;
 import com.github.beinn.lisp4j.symbols.functions.SUMFunction;
@@ -46,6 +47,8 @@ import com.github.beinn.lisp4j.symbols.macros.Cond;
 import com.github.beinn.lisp4j.symbols.macros.Let;
 import com.github.beinn.lisp4j.symbols.macros.Defmacro;
 import com.github.beinn.lisp4j.symbols.macros.Defun;
+import com.github.beinn.lisp4j.symbols.macros.Loop;
+import com.github.beinn.lisp4j.symbols.macros.Setf;
 
 /**
  *
@@ -79,7 +82,7 @@ public class CommonLispPackage extends LispPackage {
         addFun(new HaltFunction(interpreter));
         addFun(new READFunction());
         addFun(new READLINEFunction());
-        
+        addFun(new RETURNFunction());
         //Add symbols
         addSymbol(new PIConstant());
         
@@ -88,6 +91,8 @@ public class CommonLispPackage extends LispPackage {
         addMacro(new Let(interpreter));
         addMacro(new Defun(interpreter));
         addMacro(new Cond(interpreter));
+        addMacro(new Loop(interpreter));
+        addMacro(new Setf(interpreter));
     }
 
 }
