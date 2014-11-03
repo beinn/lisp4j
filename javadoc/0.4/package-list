@@ -1,0 +1,9 @@
+com.github.beinn.lisp4j
+com.github.beinn.lisp4j.ast
+com.github.beinn.lisp4j.exceptions
+com.github.beinn.lisp4j.packages
+com.github.beinn.lisp4j.symbols
+com.github.beinn.lisp4j.symbols.contacts
+com.github.beinn.lisp4j.symbols.functions
+com.github.beinn.lisp4j.symbols.functions.utils
+com.github.beinn.lisp4j.symbols.macros
