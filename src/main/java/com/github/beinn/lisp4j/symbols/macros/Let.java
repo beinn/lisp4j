@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.beinn.lisp4j.symbols.functions;
+package com.github.beinn.lisp4j.symbols.macros;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,43 +26,41 @@ import com.github.beinn.lisp4j.ast.LIST;
 import com.github.beinn.lisp4j.ast.SEXP;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 
-public class Function implements ISymbol {
+public class Let implements ISymbol {
 
-    private String name;
-    private LIST params;
-    private LIST function;
     private Interpreter interpreter;
 
-    public Function(final String funName, final LIST args, final LIST body, final Interpreter interpreter) {
-        this.name = funName;
-        this.params = args;
-        this.function = body;
+    public Let(final Interpreter interpreter) {
         this.interpreter = interpreter;
     }
 
-    public List<String> getNames() {
-        return Arrays.asList(name);
-    }
-
     public SEXP call(final LIST result, final LIST parent) {
-        final LIST newparent = new LIST();
-        for (int i =0; i< params.getExpression().size();i++) {
-            final ATOM symbol = (ATOM)params.getExpression().get(i);
-            final SEXP value = result.getExpression().get(1 + i);
-            final String sname = symbol.getId().toUpperCase();
-            newparent.getLocal().put(sname, new ISymbol() {
+    	LIST newparent = new LIST();
+    	final List<SEXP> vars = ((LIST)result.getExpression().get(1)).getExpression();
+    	final SEXP body = result.getExpression().get(2);
+        for (SEXP s:vars) {
+        	List<SEXP> statements = ((LIST)s).getExpression();
+        	final String name = ((ATOM) statements.get(0)).getId().toUpperCase();
+        	final String value = ((ATOM) statements.get(1).process(interpreter, true, parent)).getId();
+    		final ATOM atom = new ATOM();
+    		atom.setId(value);
+        	newparent.getLocal().put(name, new ISymbol() {
                 
                 public List<String> getNames() {
                     return null;
                 }
                 
-                public SEXP call(LIST result, LIST parent) {
-                    return value;
+                public SEXP call(final LIST result, final LIST parent) {
+                    return atom;
                 }
             });
         }
         newparent.setParent(parent);
-        return function.process(interpreter, true, newparent);
+        return body.process(interpreter, true, newparent);
+    }
+
+    public List<String> getNames() {
+        return Arrays.asList("LET");
     }
 
 }

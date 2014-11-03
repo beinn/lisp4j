@@ -52,7 +52,7 @@ public class NUMERICEQFunction implements ISymbol {
         }
         if (flag) {
             sexp = new ATOM();
-            sexp.id = "T";
+            sexp.setId("T");
         } else {
             sexp = new NIL();
         }

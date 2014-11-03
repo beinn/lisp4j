@@ -37,10 +37,10 @@ public class OPENFunction implements ISymbol {
         ATOM atom = new NIL();
         if(result.getExpression().size() > 1) {
             if (result.getExpression().get(1) instanceof ATOM) {
-                String path = ((ATOM) result.getExpression().get(1)).id;
+                String path = ((ATOM) result.getExpression().get(1)).getId();
                 File file = new File(path);
                 atom = new ATOM();
-                atom.id = file.toString();
+                atom.setId(file.toString());
             }
         }
 

@@ -15,30 +15,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.beinn.lisp4j.symbols.functions;
+package com.github.beinn.lisp4j;
 
-import java.util.Arrays;
-import java.util.List;
+import org.junit.Test;
 
-import com.github.beinn.lisp4j.ast.ATOM;
-import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.SEXP;
-import com.github.beinn.lisp4j.symbols.ISymbol;
+public class HELPTest extends Base {
 
-public class READFunction implements ISymbol {
-
-    public List<String>  getNames() {
-        return Arrays.asList("READ");
+    @Test
+    public void help_call() {
+        Interpreter lisp = new Interpreter();
+        lisp.execute("(HELP)");
     }
-
-    public SEXP call(LIST result, LIST parent) {
-        double acum = 0;
-        for (int i = 1; i < result.getExpression().size(); i++) {
-            acum += Double.parseDouble(((ATOM)result.getExpression().get(i)).getId());
-        }
-        ATOM atom = new ATOM();
-        atom.setId(String.valueOf(acum));
-        return atom;
-    }
+    
 
 }

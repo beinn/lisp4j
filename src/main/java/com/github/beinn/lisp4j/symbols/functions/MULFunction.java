@@ -37,10 +37,10 @@ public class MULFunction implements ISymbol {
     public SEXP call(LIST result, LIST parent) {
         double acum = 1;
         for (int i = 1; i < result.getExpression().size(); i++) {
-            acum *= Double.parseDouble(((ATOM)result.getExpression().get(i)).id);
+            acum *= Double.parseDouble(((ATOM)result.getExpression().get(i)).getId());
         }
         ATOM atom = new ATOM();
-        atom.id = String.valueOf(acum);
+        atom.setId(String.valueOf(acum));
         return atom;
     }
 

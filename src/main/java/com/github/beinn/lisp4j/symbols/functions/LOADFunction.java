@@ -48,7 +48,7 @@ public class LOADFunction implements ISymbol {
     public SEXP call(LIST result, LIST parent) {
         InputStream inputStream;
         try {
-            String name = ((ATOM)result.getExpression().get(1)).id;
+            String name = ((ATOM)result.getExpression().get(1)).getId();
             inputStream = new FileInputStream(new File(name.substring(1, name.length()-1)));
             interpreter.execute(inputStream);
         } catch (FileNotFoundException e) {
@@ -58,7 +58,7 @@ public class LOADFunction implements ISymbol {
         }
         
         ATOM atom = new ATOM();
-        atom .id = "T";
+        atom .setId("T");
         return atom;
     }
 

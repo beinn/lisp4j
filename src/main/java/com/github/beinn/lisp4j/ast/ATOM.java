@@ -31,7 +31,15 @@ import com.github.beinn.lisp4j.symbols.ISymbol;
  */
 public class ATOM extends SEXP {
 
-    public String id;
+    public String getId() {
+		return id;
+	}
+
+	public void setId(final String id) {
+		this.id = id;
+	}
+
+	private String id;
 
     @Override
     public SEXP process(final Interpreter interpreter, final boolean b, final LIST parent) {
@@ -45,7 +53,7 @@ public class ATOM extends SEXP {
             if (id.startsWith("\"") && id.endsWith("\"")) {
                 value = id;
             } else {
-                final ISymbol symbol = recoverSymbol(interpreter, parent, id.toUpperCase());
+                final ISymbol symbol = parent.recoverSymbol(interpreter, id.toUpperCase());
 
                 if (symbol != null) {
                     value = ((ATOM) symbol.call(null, null)).id;
@@ -60,33 +68,6 @@ public class ATOM extends SEXP {
 
         atom.id = value;
         return atom;
-    }
-
-    private ISymbol recoverSymbol(final Interpreter interpreter, final LIST parent, final String symbol) {
-        // local
-        final ISymbol val = findLocalSymbol(parent, symbol);
-        if (val != null) {
-            return val;
-        }
-        // global
-        for (final LispPackage p : interpreter.getPackages()) {
-            final ISymbol s = p.getSymbols().get(symbol);
-            if (s != null) {
-                return s;
-            }
-        }
-        return null;
-    }
-
-    private ISymbol findLocalSymbol(final LIST parent, final String symbol) {
-        if (parent == null) {
-            return null;
-        }
-        ISymbol val = parent.getLocal().get(symbol);
-        if (val != null) {
-            return val;
-        }
-        return findLocalSymbol(parent.getParent(), symbol);
     }
 
     @Override

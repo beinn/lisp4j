@@ -40,7 +40,7 @@ public class ATOMFunction implements ISymbol {
         }
         if (result.getExpression().get(1) instanceof ATOM) {
             sexp = new ATOM();
-            sexp.id = "T";
+            sexp.setId("T");
         } else {
             sexp = new NIL(); 
         }

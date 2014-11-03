@@ -45,7 +45,7 @@ public class Macro implements ISymbol {
         for (int i =0; i< params.getExpression().size();i++) {
             final ATOM symbol = (ATOM)params.getExpression().get(i);
             final SEXP value = result.getExpression().get(1 + i);
-            final String sname = symbol.id.toUpperCase();
+            final String sname = symbol.getId().toUpperCase();
             newparent.getLocal().put(sname, new ISymbol() {
                 
                 public List<String> getNames() {

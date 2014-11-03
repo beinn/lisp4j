@@ -33,7 +33,7 @@ public class PIConstant implements ISymbol {
 
     public SEXP call(final LIST result, LIST parent) {
         ATOM atom = new ATOM();
-        atom.id = String.valueOf(Math.PI);
+        atom.setId(String.valueOf(Math.PI));
         return atom;
     }
 

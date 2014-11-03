@@ -74,7 +74,7 @@ public class AddNewFunctionTest extends Base {
                     throw new WrongArgumentTypeException("argument should be and atom");
                 }
                 // We extract the value of the Lisp atom
-                String value = ((ATOM) param).id;
+                String value = ((ATOM) param).getId();
 
                 // EXECUTE the java code (example of calculate a md5 checksum)
                 MessageDigest digest;
@@ -88,7 +88,7 @@ public class AddNewFunctionTest extends Base {
 
                 // Store the result in a Lisp atom
                 ATOM atom = new ATOM();
-                atom.id = String.valueOf(new BigInteger(1, md5).toString(16));
+                atom.setId(String.valueOf(new BigInteger(1, md5).toString(16)));
 
                 // return the result
                 return atom;

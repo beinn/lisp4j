@@ -30,137 +30,168 @@ import com.github.beinn.lisp4j.symbols.ISymbol;
 
 public class LIST extends SEXP {
 
-    private List<SEXP> expression = new ArrayList<SEXP>();
-    private Map<String, ISymbol> local = new HashMap<String, ISymbol>();
-    private LIST parent;
-    private boolean noRoot = true;
+	private List<SEXP> expression = new ArrayList<SEXP>();
+	private Map<String, ISymbol> local = new HashMap<String, ISymbol>();
+	private LIST parent;
+	private boolean noRoot = true;
 
-    @Override
-    public SEXP process(final Interpreter interpreter, final boolean local_eval, final LIST parent) {
-        this.setParent(parent);
-        final boolean doit = (flag == FLAG.COMMA) || (eval && local_eval);
-        final LIST result = new LIST();
-        result.eval = eval;
-        // check if we are in a macro
-        if (!getExpression().isEmpty()) {
-            SEXP sexp = getExpression().get(0);
-            ISymbol macro = null;
-            if (sexp instanceof ATOM) {
-                macro = recoverMacro(interpreter, ((ATOM) sexp).id.toUpperCase());
-            }
+	@Override
+	public SEXP process(final Interpreter interpreter,
+			final boolean local_eval, final LIST parent) {
+		this.setParent(parent);
+		final boolean doit = (flag == FLAG.COMMA) || (eval && local_eval);
+		final LIST result = new LIST();
+		result.eval = eval;
+		// check if we are in a macro
+		if (!getExpression().isEmpty()) {
+			SEXP sexp = getExpression().get(0);
+			ISymbol macro = null;
+			if (sexp instanceof ATOM) {
+				macro = recoverMacro(interpreter, ((ATOM) sexp).getId()
+						.toUpperCase());
+			}
 
-            if (macro != null && doit) {
-                // expand the macro
-                return macro.call(this, null).process(interpreter, true, this);
-            }
-        }
+			if (macro != null && doit) {
+				// expand the macro
+				return macro.call(this, null).process(interpreter, true, this);
+			}
+		}
 
-        for (final SEXP sexp : getExpression()) {
-            result.getExpression().add(sexp.process(interpreter, doit, this));
-            if (interpreter.isHalted()) {
-                break;
-            }
-        }
-        SEXP results = null;
-        if (doit && !result.getExpression().isEmpty() && isNoRoot()) {
-            final String fname = result.getExpression().get(0).toString().toUpperCase();
-            final ISymbol f = recoverFunction(interpreter, fname);
-            if (f != null) {
-                results = f.call(result, null);
-            } else {
-                throw new UndefinedFunctionException(fname);
-            }
-        } else if (!isNoRoot()) {
-            result.setNoRoot(noRoot);
-            return result;
-        } else if (result.getExpression().isEmpty()) {
-            return new NIL();
-        } else if (!doit) {
-            return result;
-        }
-        return results;
-    }
+		for (final SEXP sexp : getExpression()) {
+			result.getExpression().add(sexp.process(interpreter, doit, this));
+			if (interpreter.isHalted()) {
+				break;
+			}
+		}
+		SEXP results = null;
+		if (doit && !result.getExpression().isEmpty() && isNoRoot()) {
+			final String fname = result.getExpression().get(0).toString()
+					.toUpperCase();
+			final ISymbol f = recoverFunction(interpreter, fname);
+			if (f != null) {
+				results = f.call(result, null);
+			} else {
+				throw new UndefinedFunctionException(fname);
+			}
+		} else if (!isNoRoot()) {
+			result.setNoRoot(noRoot);
+			return result;
+		} else if (result.getExpression().isEmpty()) {
+			return new NIL();
+		} else if (!doit) {
+			return result;
+		}
+		return results;
+	}
 
-    private ISymbol recoverFunction(final Interpreter interpreter, final String fname) {
-        for (LispPackage p : interpreter.getPackages()) {
-            ISymbol f = p.getFunctions().get(fname);
-            if (f != null) {
-                return f;
-            }
-        }
-        return null;
-    }
+	private ISymbol recoverFunction(final Interpreter interpreter,
+			final String fname) {
+		for (LispPackage p : interpreter.getPackages()) {
+			ISymbol f = p.getFunctions().get(fname);
+			if (f != null) {
+				return f;
+			}
+		}
+		return null;
+	}
 
-    private ISymbol recoverMacro(final Interpreter interpreter, final String fname) {
-        for (LispPackage p : interpreter.getPackages()) {
-            ISymbol f = p.getMacros().get(fname);
-            if (f != null) {
-                return f;
-            }
-        }
-        return null;
-    }
+	private ISymbol recoverMacro(final Interpreter interpreter,
+			final String fname) {
+		for (LispPackage p : interpreter.getPackages()) {
+			ISymbol f = p.getMacros().get(fname);
+			if (f != null) {
+				return f;
+			}
+		}
+		return null;
+	}
 
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        if (!eval)
-            builder.append("'");
-        if (isNoRoot())
-            builder.append("(");
-        Iterator<SEXP> it = getExpression().iterator();
-        while (it.hasNext()) {
-            SEXP sexp = it.next();
-            builder.append(sexp.toString());
-            if (it.hasNext()) {
-                builder.append(" ");
-            }
-        }
-        if (isNoRoot())
-            builder.append(")");
-        return builder.toString();
-    }
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		if (!eval)
+			builder.append("'");
+		if (isNoRoot())
+			builder.append("(");
+		Iterator<SEXP> it = getExpression().iterator();
+		while (it.hasNext()) {
+			SEXP sexp = it.next();
+			builder.append(sexp.toString());
+			if (it.hasNext()) {
+				builder.append(" ");
+			}
+		}
+		if (isNoRoot())
+			builder.append(")");
+		return builder.toString();
+	}
 
-    @Override
-    public List<String> display() {
-        final List<String> list = new ArrayList<String>();
-        Iterator<SEXP> it = getExpression().iterator();
-        while (it.hasNext()) {
-            SEXP sexp = it.next();
-            list.add(sexp.toString());
-        }
-        return list;
-    }
+	@Override
+	public List<String> display() {
+		final List<String> list = new ArrayList<String>();
+		Iterator<SEXP> it = getExpression().iterator();
+		while (it.hasNext()) {
+			SEXP sexp = it.next();
+			list.add(sexp.toString());
+		}
+		return list;
+	}
 
-    public Map<String, ISymbol> getLocal() {
-        return local;
-    }
+	public Map<String, ISymbol> getLocal() {
+		return local;
+	}
 
-    public void setLocal(Map<String, ISymbol> local) {
-        this.local = local;
-    }
+	public void setLocal(Map<String, ISymbol> local) {
+		this.local = local;
+	}
 
-    public LIST getParent() {
-        return parent;
-    }
+	public LIST getParent() {
+		return parent;
+	}
 
-    public void setParent(LIST parent) {
-        this.parent = parent;
-    }
+	public void setParent(LIST parent) {
+		this.parent = parent;
+	}
 
-    public boolean isNoRoot() {
-        return noRoot;
-    }
+	public boolean isNoRoot() {
+		return noRoot;
+	}
 
-    public void setNoRoot(boolean noRoot) {
-        this.noRoot = noRoot;
-    }
+	public void setNoRoot(boolean noRoot) {
+		this.noRoot = noRoot;
+	}
 
-    public List<SEXP> getExpression() {
-        return expression;
-    }
+	public List<SEXP> getExpression() {
+		return expression;
+	}
 
-    public void setExpression(List<SEXP> expression) {
-        this.expression = expression;
-    }
+	public void setExpression(List<SEXP> expression) {
+		this.expression = expression;
+	}
+
+	public ISymbol findLocalSymbol(final String symbol) {
+		final ISymbol val = getLocal().get(symbol);
+		if (val != null) {
+			return val;
+		}
+		if (getParent() != null) {
+			return getParent().findLocalSymbol(symbol);
+		}
+		return null;
+	}
+
+	public ISymbol recoverSymbol(final Interpreter interpreter,
+			final String symbol) {
+		final ISymbol val = findLocalSymbol(symbol);
+		if (val != null) {
+			return val;
+		}
+		for (final LispPackage p : interpreter.getPackages()) {
+			final ISymbol s = p.getSymbols().get(symbol);
+			if (s != null) {
+				return s;
+			}
+		}
+		return null;
+	}
 }

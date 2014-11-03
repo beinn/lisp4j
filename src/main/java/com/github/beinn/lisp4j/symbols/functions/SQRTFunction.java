@@ -40,7 +40,7 @@ public class SQRTFunction implements ISymbol {
         }
 
         final ATOM sexp = new ATOM();
-        sexp.id = String.valueOf(Math.sqrt(Numbers.checkNumeric(result.getExpression().get(1))));
+        sexp.setId(String.valueOf(Math.sqrt(Numbers.checkNumeric(result.getExpression().get(1)))));
 
         return sexp;
     }

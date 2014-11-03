@@ -40,7 +40,7 @@ public class EQFunction implements ISymbol {
         }
         if (result.getExpression().get(1).equals(result.getExpression().get(2))) {
             sexp = new ATOM();
-            sexp.id = "T";
+            sexp.setId("T");
         } else {
             sexp = new NIL(); 
         }

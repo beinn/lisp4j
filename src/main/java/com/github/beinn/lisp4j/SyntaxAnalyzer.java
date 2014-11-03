@@ -95,7 +95,7 @@ public class SyntaxAnalyzer {
                 atom.flag = flag;
                 state = EnumState.START;
             }
-            atom.id = token.token;
+            atom.setId(token.token);
             current.getExpression().add(atom);
         }
         return root;

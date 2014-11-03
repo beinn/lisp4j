@@ -15,30 +15,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.beinn.lisp4j.symbols.functions;
+package com.github.beinn.lisp4j;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
-import com.github.beinn.lisp4j.ast.ATOM;
-import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.SEXP;
-import com.github.beinn.lisp4j.symbols.ISymbol;
+import org.junit.Test;
 
-public class READFunction implements ISymbol {
+import com.github.beinn.lisp4j.Interpreter;
 
-    public List<String>  getNames() {
-        return Arrays.asList("READ");
+public class LETTest extends Base {
+
+    @Test
+    public void one_var() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(LET ((x 2)) (+ 2 x))");
+        assertEquals(a("4.0"), result);
     }
-
-    public SEXP call(LIST result, LIST parent) {
-        double acum = 0;
-        for (int i = 1; i < result.getExpression().size(); i++) {
-            acum += Double.parseDouble(((ATOM)result.getExpression().get(i)).getId());
-        }
-        ATOM atom = new ATOM();
-        atom.setId(String.valueOf(acum));
-        return atom;
+    
+    @Test
+    public void two_vars() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(LET ((x 2)(y 3)) (+ y x))");
+        assertEquals(a("5.0"), result);
     }
-
 }

@@ -50,7 +50,7 @@ public class HELPFunction implements ISymbol {
 	            builder.append(f.getNames()).append("\n");
 	        }
         }
-        atom.id = builder.toString();
+        atom.setId(builder.toString());
         return atom;
     }
 

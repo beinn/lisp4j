@@ -31,9 +31,9 @@ public final class Numbers {
         }
         ATOM atom = (ATOM) f;
         try {
-            return Double.parseDouble(atom.id);
+            return Double.parseDouble(atom.getId());
         } catch (NumberFormatException e) {
-            throw new WrongArgumentTypeException("Error: " + atom.id + " is not numeric");
+            throw new WrongArgumentTypeException("Error: " + atom.getId() + " is not numeric");
         }
     }
 }

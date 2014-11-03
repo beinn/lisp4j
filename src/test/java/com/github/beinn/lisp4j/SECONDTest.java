@@ -15,30 +15,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.beinn.lisp4j.symbols.functions;
+package com.github.beinn.lisp4j;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
-import com.github.beinn.lisp4j.ast.ATOM;
-import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.SEXP;
-import com.github.beinn.lisp4j.symbols.ISymbol;
+import org.junit.Test;
 
-public class READFunction implements ISymbol {
+import com.github.beinn.lisp4j.Interpreter;
 
-    public List<String>  getNames() {
-        return Arrays.asList("READ");
+
+public class SECONDTest extends Base {
+    
+    @Test
+    public void second() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(second '(4 2 3))");
+        assertEquals(a("2"), result);
     }
-
-    public SEXP call(LIST result, LIST parent) {
-        double acum = 0;
-        for (int i = 1; i < result.getExpression().size(); i++) {
-            acum += Double.parseDouble(((ATOM)result.getExpression().get(i)).getId());
-        }
-        ATOM atom = new ATOM();
-        atom.setId(String.valueOf(acum));
-        return atom;
+   
+    @Test
+    public void second_nil() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(second '(4))");
+        assertEquals(a("NIL"), result);
     }
-
+    
+    @Test
+    public void second_nil_2() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(second ())");
+        assertEquals(a("NIL"), result);
+    }
 }

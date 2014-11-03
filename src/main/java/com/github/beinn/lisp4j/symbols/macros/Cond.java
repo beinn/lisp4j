@@ -39,7 +39,7 @@ public class Cond implements ISymbol {
         for (int i = 1; i < result.getExpression().size(); i++) {
             LIST statement = (LIST) result.getExpression().get(i);
             final ATOM response = (ATOM) statement.getExpression().get(0);
-            if (!"NIL".equalsIgnoreCase(response.id)) {
+            if (!"NIL".equalsIgnoreCase(response.getId())) {
                 return statement.getExpression().get(1).process(interpreter, true, parent);
             }
         }

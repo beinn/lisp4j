@@ -41,7 +41,7 @@ public class SUMFunction implements ISymbol {
             acum += Numbers.checkNumeric(result.getExpression().get(i));
         }
         final ATOM atom = new ATOM();
-        atom.id = String.valueOf(acum);
+        atom.setId(String.valueOf(acum));
         return atom;
     }
 
