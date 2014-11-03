@@ -23,7 +23,6 @@ import java.util.List;
 import com.github.beinn.lisp4j.Interpreter;
 import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
-import com.github.beinn.lisp4j.ast.NIL;
 import com.github.beinn.lisp4j.ast.SEXP;
 import com.github.beinn.lisp4j.symbols.ISymbol;
 import com.github.beinn.lisp4j.symbols.Variable;
