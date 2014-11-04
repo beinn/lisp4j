@@ -44,6 +44,7 @@ import com.github.beinn.lisp4j.symbols.functions.SECONDFunction;
 import com.github.beinn.lisp4j.symbols.functions.SQRTFunction;
 import com.github.beinn.lisp4j.symbols.functions.SUMFunction;
 import com.github.beinn.lisp4j.symbols.macros.Cond;
+import com.github.beinn.lisp4j.symbols.macros.Defconstant;
 import com.github.beinn.lisp4j.symbols.macros.Let;
 import com.github.beinn.lisp4j.symbols.macros.Defmacro;
 import com.github.beinn.lisp4j.symbols.macros.Defun;
@@ -93,6 +94,7 @@ public class CommonLispPackage extends LispPackage {
         addMacro(new Cond(interpreter));
         addMacro(new Loop(interpreter));
         addMacro(new Setf(interpreter));
+        addMacro(new Defconstant(interpreter));
     }
 
 }
