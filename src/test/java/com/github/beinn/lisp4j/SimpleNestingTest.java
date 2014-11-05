@@ -49,7 +49,6 @@ public class SimpleNestingTest extends Base {
     }
 
     @Test(expected = UnboundVariableException.class)
-    @Ignore
     public void unboundVariable() {
         Interpreter lisp = new Interpreter();
         lisp.execute("(+ 2 x)");

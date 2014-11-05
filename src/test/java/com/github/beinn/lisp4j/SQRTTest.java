@@ -24,6 +24,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.github.beinn.lisp4j.Interpreter;
+import com.github.beinn.lisp4j.exceptions.UnboundVariableException;
 import com.github.beinn.lisp4j.exceptions.WrongArgumentNumbersException;
 import com.github.beinn.lisp4j.exceptions.WrongArgumentTypeException;
 
@@ -55,7 +56,7 @@ public class SQRTTest extends Base {
         lisp.execute("(sqrt)");
     }
     
-    @Test(expected = WrongArgumentTypeException.class)
+    @Test(expected = UnboundVariableException.class)
     public void sqrt_wrong3() {
         Interpreter lisp = new Interpreter();
         lisp.execute("(sqrt asd)");

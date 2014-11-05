@@ -21,13 +21,23 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.github.beinn.lisp4j.Interpreter;
-
-
 public class DEFPARAMETERTest extends Base {
+    
+    @Test
+    public void DEFPARAMETER_list() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(DEFPARAMETER parm `(1 2))");
+        assertEquals(a("'(1 2)"), result);
+    }
+    
+    @Test
+    public void DEFPARAMETER_atom() {
+        Interpreter lisp = new Interpreter();
+        List<String> result = lisp.execute("(DEFPARAMETER parm 4.0)");
+        assertEquals(a("4.0"), result);
+    }
     
     @Test
     public void DEFPARAMETER() {
@@ -37,7 +47,6 @@ public class DEFPARAMETERTest extends Base {
     }
     
     @Test
-    @Ignore
     public void DEFPARAMETER_and_call() {
         Interpreter lisp = new Interpreter();
         List<String> result = lisp.execute("(DEFPARAMETER parm (+ 2 3))(+ 5 parm)");

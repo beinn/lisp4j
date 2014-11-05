@@ -68,7 +68,6 @@ public class CommonLispPackage extends LispPackage {
         addFun(new ErrorFunction());
         addFun(new CARFunction());
         addFun(new CLOSEFunction());
-        addFun(new DEFPARAMETERFunction(interpreter));
         addFun(new CDRFunction());
         addFun(new CONSFunction());
         addFun(new OPENFunction());
@@ -95,6 +94,7 @@ public class CommonLispPackage extends LispPackage {
         addMacro(new Loop(interpreter));
         addMacro(new Setf(interpreter));
         addMacro(new Defconstant(interpreter));
+        addMacro(new DEFPARAMETERFunction(interpreter));
     }
 
 }

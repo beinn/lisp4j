@@ -21,8 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.github.beinn.lisp4j.Interpreter;
-import com.github.beinn.lisp4j.packages.LispPackage;
-import com.github.beinn.lisp4j.symbols.ISymbol;
+import com.github.beinn.lisp4j.exceptions.UnboundVariableException;
 import com.github.beinn.lisp4j.symbols.Variable;
 
 /**
@@ -33,23 +32,26 @@ import com.github.beinn.lisp4j.symbols.Variable;
 public class ATOM extends SEXP {
 
     public String getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(final String id) {
-		this.id = id;
-	}
+    public void setId(final String id) {
+        this.id = id;
+    }
 
-	private String id;
+    private String id;
 
     @Override
     public SEXP process(final Interpreter interpreter, final boolean b, final LIST parent) {
-         SEXP sexp;
+        SEXP sexp;
         ATOM atom = new ATOM();
-        
+        if (!b || !eval) {
+            atom.id = id;
+            return atom;
+        }
         try {
             Double.parseDouble(id);
-            
+
             atom.id = id;
             sexp = atom;
         } catch (NumberFormatException nfe) {
@@ -64,14 +66,16 @@ public class ATOM extends SEXP {
                 } else if ("NIL".equalsIgnoreCase(id)) {
                     atom.id = "NIL";
                     sexp = atom;
-                } else {
-                    atom.id = id;
+                } else if ("T".equalsIgnoreCase(id)) {
+                    atom.id = "T";
                     sexp = atom;
-                    //throw new UnboundVariableException(id);
+                } else {
+/*                    atom.id = id;
+                    sexp = atom;*/
+                    throw new UnboundVariableException(id);
                 }
             }
         }
-
 
         return sexp;
     }

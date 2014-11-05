@@ -40,15 +40,14 @@ public class DEFPARAMETERFunction implements ISymbol {
     }
 
     public SEXP call(LIST result, LIST parent) {
-        final ATOM atom = new ATOM();
+        SEXP sexp = null;
         
         if (result.getExpression().size() > 2) {
             final String name = ((ATOM) result.getExpression().get(1)).getId().toUpperCase();
-            final String value = ((ATOM) result.getExpression().get(2)).getId();
-            atom.setId(value);
-            interpreter.getCurrentPackage().getSymbols().put(name, new Variable(atom));
+            sexp = result.getExpression().get(2).process(interpreter, true, parent);
+            interpreter.getCurrentPackage().getSymbols().put(name, new Variable(sexp));
         }
-        return atom;
+        return sexp;
     }
 
 }
