@@ -52,45 +52,43 @@ public class LexicalParser {
             if (c == '\n') {
                 state = EnumState.START;
             }
-        } else {
-            if (c == '(') {
-                createToken(tokens, buffer);
-                tokens.add(new Token("("));
-            } else if (c == ')') {
-                createToken(tokens, buffer);
-                tokens.add(new Token(")"));
-            } else if (c == ';') {
-                createToken(tokens, buffer);
-                state = EnumState.COMMENT;
-            } else if (c == '`') {
-                createToken(tokens, buffer);
-                tokens.add(new Token("`"));
-            } else if (c == '\'') {
-                createToken(tokens, buffer);
-                tokens.add(new Token("'"));
-            } else if (c == ' ') {
-                createToken(tokens, buffer);
-            } else if (c == '"') {
-                buffer.append(c);
-                state = EnumState.STRING;
-            } else if (c == '|') {
-            } else if (c == '#') {
-            } else if (c == ',') {
-                createToken(tokens, buffer);
-                buffer.append(c);
-                createToken(tokens, buffer);
-            } else if (c == '@') {
-                if (tokens.size() > 0 && buffer.length() == 0 && tokens.get(tokens.size() - 1).token.equals(",")) {
-                    tokens.get(tokens.size() - 1).token = ",@";
-                }
-            } else if (c == '\n') {
-            } else if (c == '\r') {
-            } else if (c == '\t') {
-            } else {
-                buffer.append(c);
+        } else if (c == '(') {
+            createToken(tokens, buffer);
+            tokens.add(new Token("("));
+        } else if (c == ')') {
+            createToken(tokens, buffer);
+            tokens.add(new Token(")"));
+        } else if (c == ';') {
+            createToken(tokens, buffer);
+            state = EnumState.COMMENT;
+        } else if (c == '`') {
+            createToken(tokens, buffer);
+            tokens.add(new Token("`"));
+        } else if (c == '\'') {
+            createToken(tokens, buffer);
+            tokens.add(new Token("'"));
+        } else if (c == ' ') {
+            createToken(tokens, buffer);
+        } else if (c == '"') {
+            buffer.append(c);
+            state = EnumState.STRING;
+        } else if (c == '|') {
+        } else if (c == '#') {
+        } else if (c == ',') {
+            createToken(tokens, buffer);
+            buffer.append(c);
+            createToken(tokens, buffer);
+        } else if (c == '@') {
+            int last = tokens.size() - 1;
+            if (tokens.size() > 0 && buffer.length() == 0 && tokens.get(last).token.equals(",")) {
+                tokens.get(last).token = ",@";
             }
+        } else if (c == '\n') {
+        } else if (c == '\r') {
+        } else if (c == '\t') {
+        } else {
+            buffer.append(c);
         }
-
     }
 
     private void createToken(final List<Token> tokens, final StringBuilder buffer) {
