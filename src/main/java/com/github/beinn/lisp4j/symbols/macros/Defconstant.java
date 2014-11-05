@@ -40,15 +40,13 @@ public class Defconstant implements ISymbol {
     }
 
     public SEXP call(LIST result, LIST parent) {
-        final ATOM atom = new ATOM();
+        SEXP exp = null;
         
         if (result.getExpression().size() > 2) {
             final String name = ((ATOM) result.getExpression().get(1)).getId().toUpperCase();
-            final String value = ((ATOM) result.getExpression().get(2)).getId();
-            atom.setId(value);
-            interpreter.getCurrentPackage().getSymbols().put(name, new Constant(atom));
+            exp = result.getExpression().get(2).process(interpreter, true, parent);
+            interpreter.getCurrentPackage().getSymbols().put(name, new Constant(exp));
         }
-        return atom;
+        return exp;
     }
-
 }

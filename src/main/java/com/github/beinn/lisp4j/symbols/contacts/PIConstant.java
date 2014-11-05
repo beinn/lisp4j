@@ -23,13 +23,18 @@ import java.util.List;
 import com.github.beinn.lisp4j.ast.ATOM;
 import com.github.beinn.lisp4j.ast.LIST;
 import com.github.beinn.lisp4j.ast.SEXP;
-import com.github.beinn.lisp4j.symbols.Variable;
+import com.github.beinn.lisp4j.symbols.Constant;
 
-public class PIConstant extends Variable {
+public class PIConstant extends Constant {
 
     public PIConstant() {
         super(null);
-        setValue(call(null,null));
+    }
+
+    public SEXP getValue() {
+        final ATOM atom = new ATOM();
+        atom.setId(String.valueOf(Math.PI));
+        return atom;
     }
 
     public List<String> getNames() {
@@ -37,10 +42,7 @@ public class PIConstant extends Variable {
     }
 
     public SEXP call(final LIST result, LIST parent) {
-        ATOM atom = new ATOM();
-        atom.setId(String.valueOf(Math.PI));
-        
-        return atom;
+        return getValue();
     }
 
 }
